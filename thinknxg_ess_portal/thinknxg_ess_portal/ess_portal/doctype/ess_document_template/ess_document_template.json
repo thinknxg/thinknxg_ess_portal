@@ -1,0 +1,286 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-10-24 12:00:00.000000",
+ "modified": "2026-10-24 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "name": "ESS Document Template",
+ "module": "ESS Portal",
+ "custom": 0,
+ "engine": "InnoDB",
+ "editable_grid": 1,
+ "field_order": [
+  "template_name",
+  "template_key",
+  "document_type",
+  "description",
+  "column_break_26",
+  "is_active",
+  "visible_to_employees",
+  "version",
+  "letter_head",
+  "section_break_27",
+  "min_service_months",
+  "employee_statuses",
+  "max_per_month",
+  "column_break_28",
+  "requires_approval",
+  "approver_role",
+  "requires_purpose",
+  "addressee_required",
+  "include_salary",
+  "section_break_29",
+  "signatory_name",
+  "signatory_designation",
+  "column_break_30",
+  "signature_image",
+  "section_break_31",
+  "template_html"
+ ],
+ "fields": [
+  {
+   "fieldname": "template_name",
+   "fieldtype": "Data",
+   "label": "Template Name",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1,
+   "idx": 1
+  },
+  {
+   "fieldname": "template_key",
+   "fieldtype": "Data",
+   "label": "Template Key",
+   "reqd": 1,
+   "unique": 1,
+   "idx": 2
+  },
+  {
+   "fieldname": "document_type",
+   "fieldtype": "Select",
+   "label": "Document Type",
+   "in_list_view": 1,
+   "options": "Employment Verification\nSalary Certificate\nExperience Letter\nLeave Confirmation\nNo Objection Certificate\nOther",
+   "idx": 3
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description",
+   "idx": 4
+  },
+  {
+   "fieldname": "column_break_26",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 5
+  },
+  {
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active",
+   "default": "1",
+   "in_list_view": 1,
+   "idx": 6
+  },
+  {
+   "fieldname": "visible_to_employees",
+   "fieldtype": "Check",
+   "label": "Visible To Employees",
+   "default": "1",
+   "idx": 7
+  },
+  {
+   "fieldname": "version",
+   "fieldtype": "Int",
+   "label": "Version",
+   "default": "1",
+   "read_only": 1,
+   "idx": 8
+  },
+  {
+   "fieldname": "letter_head",
+   "fieldtype": "Link",
+   "label": "Letter Head",
+   "options": "Letter Head",
+   "idx": 9
+  },
+  {
+   "fieldname": "section_break_27",
+   "fieldtype": "Section Break",
+   "label": "Eligibility & Approval",
+   "idx": 10
+  },
+  {
+   "fieldname": "min_service_months",
+   "fieldtype": "Int",
+   "label": "Min Service Months",
+   "default": "0",
+   "idx": 11
+  },
+  {
+   "fieldname": "employee_statuses",
+   "fieldtype": "Data",
+   "label": "Employee Statuses",
+   "default": "Active",
+   "description": "Comma separated Employee status values",
+   "idx": 12
+  },
+  {
+   "fieldname": "max_per_month",
+   "fieldtype": "Int",
+   "label": "Max Per Month",
+   "default": "3",
+   "idx": 13
+  },
+  {
+   "fieldname": "column_break_28",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 14
+  },
+  {
+   "fieldname": "requires_approval",
+   "fieldtype": "Check",
+   "label": "Requires Approval",
+   "default": "0",
+   "idx": 15
+  },
+  {
+   "fieldname": "approver_role",
+   "fieldtype": "Link",
+   "label": "Approver Role",
+   "options": "Role",
+   "default": "HR Manager",
+   "idx": 16
+  },
+  {
+   "fieldname": "requires_purpose",
+   "fieldtype": "Check",
+   "label": "Requires Purpose",
+   "default": "1",
+   "idx": 17
+  },
+  {
+   "fieldname": "addressee_required",
+   "fieldtype": "Check",
+   "label": "Addressee Required",
+   "default": "0",
+   "idx": 18
+  },
+  {
+   "fieldname": "include_salary",
+   "fieldtype": "Check",
+   "label": "Include Salary",
+   "default": "0",
+   "description": "Exposes {{ salary }} (from the latest submitted Salary Slip). Always pair with approval.",
+   "idx": 19
+  },
+  {
+   "fieldname": "section_break_29",
+   "fieldtype": "Section Break",
+   "label": "Signatory",
+   "idx": 20
+  },
+  {
+   "fieldname": "signatory_name",
+   "fieldtype": "Data",
+   "label": "Signatory Name",
+   "idx": 21
+  },
+  {
+   "fieldname": "signatory_designation",
+   "fieldtype": "Data",
+   "label": "Signatory Designation",
+   "idx": 22
+  },
+  {
+   "fieldname": "column_break_30",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 23
+  },
+  {
+   "fieldname": "signature_image",
+   "fieldtype": "Attach Image",
+   "label": "Signature Image",
+   "idx": 24
+  },
+  {
+   "fieldname": "section_break_31",
+   "fieldtype": "Section Break",
+   "label": "Template",
+   "idx": 25
+  },
+  {
+   "fieldname": "template_html",
+   "fieldtype": "Code",
+   "label": "Template Html",
+   "options": "HTML",
+   "reqd": 1,
+   "description": "Jinja. Available: employee, company, today, purpose, addressed_to, salary, signatory, verification_code, verify_url.",
+   "idx": 26
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "ESS Portal Admin",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "HR Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "Employee",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "print": 1,
+   "email": 1,
+   "share": 0
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "index_web_pages_for_search": 0,
+ "row_format": "Dynamic",
+ "autoname": "field:template_name",
+ "naming_rule": "By fieldname",
+ "track_changes": 1
+}

@@ -1,0 +1,20 @@
+{% extends "templates/web.html" %}
+{% block title %}Document verification{% endblock %}
+{% block page_content %}
+<div style="max-width:520px;margin:48px auto;font-family:Inter,system-ui,sans-serif">
+  <h2>Verify an HR document</h2>
+  {% if disabled %}<p>Public verification is not enabled.</p>{% else %}
+  <form method="get" style="display:flex;gap:8px;margin:16px 0">
+    <input name="code" value="{{ code }}" placeholder="Verification code" class="form-control" required>
+    <button class="btn btn-primary" type="submit">Verify</button>
+  </form>
+  {% if rate_limited %}<p>Too many attempts. Try again later.</p>
+  {% elif checked and result %}
+    <div style="padding:16px;border-radius:12px;background:#E8F5EE;color:#0B4A35">
+      <b>✔ Valid document</b><br>{{ result.document }} issued to {{ result.employee_name }} on {{ result.issued_on }}.
+    </div>
+  {% elif checked %}
+    <div style="padding:16px;border-radius:12px;background:#FDECEA;color:#7A1C14"><b>✖ No matching document.</b></div>
+  {% endif %}{% endif %}
+</div>
+{% endblock %}

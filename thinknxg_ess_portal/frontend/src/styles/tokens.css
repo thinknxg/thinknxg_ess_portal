@@ -1,0 +1,54 @@
+/* thinkNXG ESS design tokens. Cool paper, wadi green brand, saffron for attention, pomegranate for breach. */
+:root {
+  --brand: #0F6E5A;
+  --brand-ink: #FFFFFF;
+  --brand-soft: color-mix(in srgb, var(--brand) 12%, transparent);
+  --ink: #14231F;
+  --ink-2: #44554F;
+  --ink-3: #6E7E78;
+  --paper: #F4F7F6;
+  --surface: #FFFFFF;
+  --surface-2: #EDF2F0;
+  --line: #D8E1DD;
+  --line-strong: #B9C7C1;
+  --saffron: #D9971E;
+  --saffron-soft: #FBF0D9;
+  --saffron-ink: #7A5208;
+  --pom: #B23B3B;
+  --pom-soft: #F9E3E1;
+  --ok: #1E7F4F;
+  --ok-soft: #DDF1E5;
+  --info: #2F5F8A;
+  --info-soft: #E1ECF6;
+  --focus: #2F7DE1;
+  --shadow-pop: 0 12px 32px -12px rgba(20, 35, 31, 0.28), 0 2px 6px rgba(20, 35, 31, 0.08);
+
+  --font: "IBM Plex Sans", "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fs-xs: 0.75rem; --fs-sm: 0.8125rem; --fs-md: 0.9375rem; --fs-lg: 1.125rem; --fs-xl: 1.5rem; --fs-2xl: 2rem;
+  --r-sm: 6px; --r-md: 10px; --r-lg: 16px;
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 24px; --sp-6: 32px; --sp-7: 48px;
+  --rail: 248px;
+  --header: 60px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: #E5EEEA; --ink-2: #B6C5BF; --ink-3: #8A9C95;
+    --paper: #0E1513; --surface: #15201C; --surface-2: #1B2925; --line: #263631; --line-strong: #364A43;
+    --brand-soft: color-mix(in srgb, var(--brand) 26%, transparent);
+    --saffron-soft: #3A2C10; --saffron-ink: #F2C46E; --pom-soft: #3B1C1B; --ok-soft: #12321F; --info-soft: #172A3B;
+    --ok: #4CC08A; --pom: #E07068; --info: #7FB2E3;
+    --shadow-pop: 0 16px 40px -12px rgba(0, 0, 0, 0.6);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ink: #E5EEEA; --ink-2: #B6C5BF; --ink-3: #8A9C95;
+  --paper: #0E1513; --surface: #15201C; --surface-2: #1B2925; --line: #263631; --line-strong: #364A43;
+  --brand-soft: color-mix(in srgb, var(--brand) 26%, transparent);
+  --saffron-soft: #3A2C10; --saffron-ink: #F2C46E; --pom-soft: #3B1C1B; --ok-soft: #12321F; --info-soft: #172A3B;
+  --ok: #4CC08A; --pom: #E07068; --info: #7FB2E3;
+  --shadow-pop: 0 16px 40px -12px rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}

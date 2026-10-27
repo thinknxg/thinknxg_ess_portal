@@ -1,0 +1,225 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-10-24 12:00:00.000000",
+ "modified": "2026-10-24 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "name": "ESS Recognition",
+ "module": "ESS Portal",
+ "custom": 0,
+ "engine": "InnoDB",
+ "editable_grid": 1,
+ "field_order": [
+  "naming_series",
+  "recipient",
+  "recipient_name",
+  "recipient_user",
+  "category",
+  "points",
+  "column_break_38",
+  "sender",
+  "sender_employee",
+  "sender_name",
+  "visibility",
+  "status",
+  "section_break_39",
+  "message",
+  "moderated_by",
+  "reaction_count",
+  "posted_on"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "ESS-REC-.YYYY.-.#####",
+   "default": "ESS-REC-.YYYY.-.#####",
+   "hidden": 1,
+   "reqd": 1,
+   "idx": 1
+  },
+  {
+   "fieldname": "recipient",
+   "fieldtype": "Link",
+   "label": "Recipient",
+   "options": "Employee",
+   "reqd": 1,
+   "in_list_view": 1,
+   "idx": 2
+  },
+  {
+   "fieldname": "recipient_name",
+   "fieldtype": "Data",
+   "label": "Recipient Name",
+   "fetch_from": "recipient.employee_name",
+   "read_only": 1,
+   "idx": 3
+  },
+  {
+   "fieldname": "recipient_user",
+   "fieldtype": "Link",
+   "label": "Recipient User",
+   "options": "User",
+   "fetch_from": "recipient.user_id",
+   "read_only": 1,
+   "idx": 4
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Link",
+   "label": "Category",
+   "options": "ESS Recognition Category",
+   "in_list_view": 1,
+   "idx": 5
+  },
+  {
+   "fieldname": "points",
+   "fieldtype": "Int",
+   "label": "Points",
+   "default": "0",
+   "idx": 6
+  },
+  {
+   "fieldname": "column_break_38",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 7
+  },
+  {
+   "fieldname": "sender",
+   "fieldtype": "Link",
+   "label": "Sender",
+   "options": "User",
+   "read_only": 1,
+   "idx": 8
+  },
+  {
+   "fieldname": "sender_employee",
+   "fieldtype": "Link",
+   "label": "Sender Employee",
+   "options": "Employee",
+   "read_only": 1,
+   "idx": 9
+  },
+  {
+   "fieldname": "sender_name",
+   "fieldtype": "Data",
+   "label": "Sender Name",
+   "read_only": 1,
+   "idx": 10
+  },
+  {
+   "fieldname": "visibility",
+   "fieldtype": "Select",
+   "label": "Visibility",
+   "options": "Public\nTeam\nPrivate",
+   "default": "Public",
+   "idx": 11
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Pending\nApproved\nRejected",
+   "default": "Approved",
+   "in_list_view": 1,
+   "idx": 12
+  },
+  {
+   "fieldname": "section_break_39",
+   "fieldtype": "Section Break",
+   "label": null,
+   "idx": 13
+  },
+  {
+   "fieldname": "message",
+   "fieldtype": "Small Text",
+   "label": "Message",
+   "reqd": 1,
+   "idx": 14
+  },
+  {
+   "fieldname": "moderated_by",
+   "fieldtype": "Link",
+   "label": "Moderated By",
+   "options": "User",
+   "read_only": 1,
+   "idx": 15
+  },
+  {
+   "fieldname": "reaction_count",
+   "fieldtype": "Int",
+   "label": "Reaction Count",
+   "read_only": 1,
+   "idx": 16
+  },
+  {
+   "fieldname": "posted_on",
+   "fieldtype": "Datetime",
+   "label": "Posted On",
+   "read_only": 1,
+   "idx": 17
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "ESS Portal Admin",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "HR Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "Employee",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "print": 1,
+   "email": 1,
+   "share": 0
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "index_web_pages_for_search": 0,
+ "row_format": "Dynamic",
+ "autoname": "naming_series:",
+ "naming_rule": "By \"Naming Series\" field"
+}

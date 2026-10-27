@@ -1,0 +1,172 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-10-24 12:00:00.000000",
+ "modified": "2026-10-24 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "name": "ESS Approval Delegation",
+ "module": "ESS Portal",
+ "custom": 0,
+ "engine": "InnoDB",
+ "editable_grid": 1,
+ "field_order": [
+  "naming_series",
+  "delegator",
+  "delegate",
+  "from_date",
+  "to_date",
+  "column_break_57",
+  "include_leave",
+  "include_expense",
+  "include_attendance",
+  "is_active",
+  "reason"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "ESS-DLG-.#####",
+   "default": "ESS-DLG-.#####",
+   "hidden": 1,
+   "reqd": 1,
+   "idx": 1
+  },
+  {
+   "fieldname": "delegator",
+   "fieldtype": "Link",
+   "label": "Delegator",
+   "options": "User",
+   "reqd": 1,
+   "in_list_view": 1,
+   "idx": 2
+  },
+  {
+   "fieldname": "delegate",
+   "fieldtype": "Link",
+   "label": "Delegate",
+   "options": "User",
+   "reqd": 1,
+   "in_list_view": 1,
+   "idx": 3
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date",
+   "reqd": 1,
+   "in_list_view": 1,
+   "idx": 4
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date",
+   "reqd": 1,
+   "in_list_view": 1,
+   "idx": 5
+  },
+  {
+   "fieldname": "column_break_57",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 6
+  },
+  {
+   "fieldname": "include_leave",
+   "fieldtype": "Check",
+   "label": "Include Leave",
+   "default": "1",
+   "idx": 7
+  },
+  {
+   "fieldname": "include_expense",
+   "fieldtype": "Check",
+   "label": "Include Expense",
+   "default": "1",
+   "idx": 8
+  },
+  {
+   "fieldname": "include_attendance",
+   "fieldtype": "Check",
+   "label": "Include Attendance",
+   "default": "1",
+   "idx": 9
+  },
+  {
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active",
+   "default": "1",
+   "idx": 10
+  },
+  {
+   "fieldname": "reason",
+   "fieldtype": "Small Text",
+   "label": "Reason",
+   "idx": 11
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "ESS Portal Admin",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "HR Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "Employee",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "print": 1,
+   "email": 1,
+   "share": 0
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "index_web_pages_for_search": 0,
+ "row_format": "Dynamic",
+ "autoname": "naming_series:",
+ "naming_rule": "By \"Naming Series\" field",
+ "track_changes": 1
+}

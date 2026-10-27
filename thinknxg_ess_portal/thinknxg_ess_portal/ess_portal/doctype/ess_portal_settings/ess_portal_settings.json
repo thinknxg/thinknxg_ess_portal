@@ -1,0 +1,561 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-10-24 12:00:00.000000",
+ "modified": "2026-10-24 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "name": "ESS Portal Settings",
+ "module": "ESS Portal",
+ "custom": 0,
+ "engine": "InnoDB",
+ "editable_grid": 1,
+ "field_order": [
+  "section_break_1",
+  "portal_title",
+  "brand_color",
+  "logo",
+  "column_break_2",
+  "default_language",
+  "support_email",
+  "weekend_days",
+  "section_break_3",
+  "enable_attendance",
+  "enable_checkin",
+  "enable_leave",
+  "enable_payroll",
+  "column_break_4",
+  "enable_expenses",
+  "enable_helpdesk",
+  "enable_documents",
+  "enable_recognition",
+  "column_break_5",
+  "enable_assistant",
+  "enable_goals",
+  "enable_analytics",
+  "section_break_6",
+  "require_geolocation",
+  "allow_checkin_without_shift",
+  "checkin_cooldown_minutes",
+  "column_break_7",
+  "show_team_availability",
+  "auto_submit_approved_expenses",
+  "profile_editable_fields",
+  "section_break_8",
+  "default_ticket_assignee",
+  "allow_reopen_days",
+  "column_break_9",
+  "auto_close_resolved_days",
+  "ticket_rate_limit_per_hour",
+  "section_break_10",
+  "public_verification",
+  "column_break_11",
+  "document_rate_limit_per_day",
+  "document_expiry_alert_days",
+  "section_break_12",
+  "recognition_requires_approval",
+  "allow_public_recognition",
+  "column_break_13",
+  "monthly_points_budget",
+  "section_break_14",
+  "min_group_size",
+  "section_break_15",
+  "ai_provider",
+  "ai_model",
+  "ai_base_url",
+  "ai_api_key",
+  "column_break_16",
+  "ai_allow_salary_answers",
+  "ai_max_requests_per_hour",
+  "ai_retention_days",
+  "ai_system_notice",
+  "section_break_17",
+  "pwa_theme_color",
+  "vapid_public_key",
+  "column_break_18",
+  "vapid_private_key",
+  "vapid_subject"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break",
+   "label": "Branding",
+   "idx": 1
+  },
+  {
+   "fieldname": "portal_title",
+   "fieldtype": "Data",
+   "label": "Portal Title",
+   "default": "thinkNXG ESS Portal",
+   "idx": 2
+  },
+  {
+   "fieldname": "brand_color",
+   "fieldtype": "Color",
+   "label": "Brand Color",
+   "default": "#0F6E5A",
+   "idx": 3
+  },
+  {
+   "fieldname": "logo",
+   "fieldtype": "Attach Image",
+   "label": "Logo",
+   "idx": 4
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 5
+  },
+  {
+   "fieldname": "default_language",
+   "fieldtype": "Select",
+   "label": "Default Language",
+   "options": "en\nar",
+   "default": "en",
+   "idx": 6
+  },
+  {
+   "fieldname": "support_email",
+   "fieldtype": "Data",
+   "label": "Support Email",
+   "options": "Email",
+   "idx": 7
+  },
+  {
+   "fieldname": "weekend_days",
+   "fieldtype": "Data",
+   "label": "Weekend Days",
+   "default": "Friday,Saturday",
+   "description": "Comma separated. Used only for display hints; leave balances come from HRMS holiday lists.",
+   "idx": 8
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break",
+   "label": "Modules",
+   "idx": 9
+  },
+  {
+   "fieldname": "enable_attendance",
+   "fieldtype": "Check",
+   "label": "Enable Attendance",
+   "default": "1",
+   "idx": 10
+  },
+  {
+   "fieldname": "enable_checkin",
+   "fieldtype": "Check",
+   "label": "Enable Checkin",
+   "default": "1",
+   "idx": 11
+  },
+  {
+   "fieldname": "enable_leave",
+   "fieldtype": "Check",
+   "label": "Enable Leave",
+   "default": "1",
+   "idx": 12
+  },
+  {
+   "fieldname": "enable_payroll",
+   "fieldtype": "Check",
+   "label": "Enable Payroll",
+   "default": "1",
+   "idx": 13
+  },
+  {
+   "fieldname": "column_break_4",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 14
+  },
+  {
+   "fieldname": "enable_expenses",
+   "fieldtype": "Check",
+   "label": "Enable Expenses",
+   "default": "1",
+   "idx": 15
+  },
+  {
+   "fieldname": "enable_helpdesk",
+   "fieldtype": "Check",
+   "label": "Enable Helpdesk",
+   "default": "1",
+   "idx": 16
+  },
+  {
+   "fieldname": "enable_documents",
+   "fieldtype": "Check",
+   "label": "Enable Documents",
+   "default": "1",
+   "idx": 17
+  },
+  {
+   "fieldname": "enable_recognition",
+   "fieldtype": "Check",
+   "label": "Enable Recognition",
+   "default": "1",
+   "idx": 18
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 19
+  },
+  {
+   "fieldname": "enable_assistant",
+   "fieldtype": "Check",
+   "label": "Enable Assistant",
+   "default": "1",
+   "idx": 20
+  },
+  {
+   "fieldname": "enable_goals",
+   "fieldtype": "Check",
+   "label": "Enable Goals",
+   "default": "1",
+   "idx": 21
+  },
+  {
+   "fieldname": "enable_analytics",
+   "fieldtype": "Check",
+   "label": "Enable Analytics",
+   "default": "1",
+   "idx": 22
+  },
+  {
+   "fieldname": "section_break_6",
+   "fieldtype": "Section Break",
+   "label": "Attendance & Leave",
+   "idx": 23
+  },
+  {
+   "fieldname": "require_geolocation",
+   "fieldtype": "Check",
+   "label": "Require Geolocation",
+   "default": "0",
+   "description": "Require browser location for check-in. Geofence radius is taken from the HRMS Shift Location on the active Shift Assignment.",
+   "idx": 24
+  },
+  {
+   "fieldname": "allow_checkin_without_shift",
+   "fieldtype": "Check",
+   "label": "Allow Checkin Without Shift",
+   "default": "0",
+   "idx": 25
+  },
+  {
+   "fieldname": "checkin_cooldown_minutes",
+   "fieldtype": "Int",
+   "label": "Checkin Cooldown Minutes",
+   "default": "2",
+   "idx": 26
+  },
+  {
+   "fieldname": "column_break_7",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 27
+  },
+  {
+   "fieldname": "show_team_availability",
+   "fieldtype": "Check",
+   "label": "Show Team Availability",
+   "default": "1",
+   "idx": 28
+  },
+  {
+   "fieldname": "auto_submit_approved_expenses",
+   "fieldtype": "Check",
+   "label": "Auto Submit Approved Expenses",
+   "default": "0",
+   "idx": 29
+  },
+  {
+   "fieldname": "profile_editable_fields",
+   "fieldtype": "Small Text",
+   "label": "Profile Editable Fields",
+   "default": "cell_number,personal_email,current_address,permanent_address,person_to_be_contacted,emergency_phone_number,relation,marital_status,bank_name,bank_ac_no,iban",
+   "description": "Employee fields that may be requested for change. Bank fields always require HR approval.",
+   "idx": 30
+  },
+  {
+   "fieldname": "section_break_8",
+   "fieldtype": "Section Break",
+   "label": "HR Helpdesk",
+   "idx": 31
+  },
+  {
+   "fieldname": "default_ticket_assignee",
+   "fieldtype": "Link",
+   "label": "Default Ticket Assignee",
+   "options": "User",
+   "idx": 32
+  },
+  {
+   "fieldname": "allow_reopen_days",
+   "fieldtype": "Int",
+   "label": "Allow Reopen Days",
+   "default": "7",
+   "idx": 33
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 34
+  },
+  {
+   "fieldname": "auto_close_resolved_days",
+   "fieldtype": "Int",
+   "label": "Auto Close Resolved Days",
+   "default": "5",
+   "idx": 35
+  },
+  {
+   "fieldname": "ticket_rate_limit_per_hour",
+   "fieldtype": "Int",
+   "label": "Ticket Rate Limit Per Hour",
+   "default": "10",
+   "idx": 36
+  },
+  {
+   "fieldname": "section_break_10",
+   "fieldtype": "Section Break",
+   "label": "Documents",
+   "idx": 37
+  },
+  {
+   "fieldname": "public_verification",
+   "fieldtype": "Check",
+   "label": "Public Verification",
+   "default": "1",
+   "description": "Allow third parties to verify generated letters at /ess-verify using the printed code.",
+   "idx": 38
+  },
+  {
+   "fieldname": "column_break_11",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 39
+  },
+  {
+   "fieldname": "document_rate_limit_per_day",
+   "fieldtype": "Int",
+   "label": "Document Rate Limit Per Day",
+   "default": "5",
+   "idx": 40
+  },
+  {
+   "fieldname": "document_expiry_alert_days",
+   "fieldtype": "Int",
+   "label": "Document Expiry Alert Days",
+   "default": "30",
+   "idx": 41
+  },
+  {
+   "fieldname": "section_break_12",
+   "fieldtype": "Section Break",
+   "label": "Recognition & Gamification",
+   "idx": 42
+  },
+  {
+   "fieldname": "recognition_requires_approval",
+   "fieldtype": "Check",
+   "label": "Recognition Requires Approval",
+   "default": "0",
+   "idx": 43
+  },
+  {
+   "fieldname": "allow_public_recognition",
+   "fieldtype": "Check",
+   "label": "Allow Public Recognition",
+   "default": "1",
+   "idx": 44
+  },
+  {
+   "fieldname": "column_break_13",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 45
+  },
+  {
+   "fieldname": "monthly_points_budget",
+   "fieldtype": "Int",
+   "label": "Monthly Points Budget",
+   "default": "100",
+   "idx": 46
+  },
+  {
+   "fieldname": "section_break_14",
+   "fieldtype": "Section Break",
+   "label": "Analytics",
+   "idx": 47
+  },
+  {
+   "fieldname": "min_group_size",
+   "fieldtype": "Int",
+   "label": "Min Group Size",
+   "default": "5",
+   "description": "Breakdowns with fewer people than this are suppressed to protect individuals.",
+   "idx": 48
+  },
+  {
+   "fieldname": "section_break_15",
+   "fieldtype": "Section Break",
+   "label": "AI HR Assistant",
+   "idx": 49
+  },
+  {
+   "fieldname": "ai_provider",
+   "fieldtype": "Select",
+   "label": "Ai Provider",
+   "options": "Disabled\nAnthropic\nOpenAI Compatible",
+   "default": "Disabled",
+   "idx": 50
+  },
+  {
+   "fieldname": "ai_model",
+   "fieldtype": "Data",
+   "label": "Ai Model",
+   "default": "claude-sonnet-5-5",
+   "idx": 51
+  },
+  {
+   "fieldname": "ai_base_url",
+   "fieldtype": "Data",
+   "label": "Ai Base Url",
+   "description": "Only for OpenAI-compatible providers, e.g. https://api.example.com/v1",
+   "idx": 52
+  },
+  {
+   "fieldname": "ai_api_key",
+   "fieldtype": "Password",
+   "label": "Ai Api Key",
+   "idx": 53
+  },
+  {
+   "fieldname": "column_break_16",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 54
+  },
+  {
+   "fieldname": "ai_allow_salary_answers",
+   "fieldtype": "Check",
+   "label": "Ai Allow Salary Answers",
+   "default": "0",
+   "description": "When off, the assistant links to payslips instead of quoting amounts.",
+   "idx": 55
+  },
+  {
+   "fieldname": "ai_max_requests_per_hour",
+   "fieldtype": "Int",
+   "label": "Ai Max Requests Per Hour",
+   "default": "30",
+   "idx": 56
+  },
+  {
+   "fieldname": "ai_retention_days",
+   "fieldtype": "Int",
+   "label": "Ai Retention Days",
+   "default": "90",
+   "idx": 57
+  },
+  {
+   "fieldname": "ai_system_notice",
+   "fieldtype": "Small Text",
+   "label": "Ai System Notice",
+   "default": "Answers are generated from approved HR policies. Always confirm important decisions with HR.",
+   "idx": 58
+  },
+  {
+   "fieldname": "section_break_17",
+   "fieldtype": "Section Break",
+   "label": "PWA & Push",
+   "idx": 59
+  },
+  {
+   "fieldname": "pwa_theme_color",
+   "fieldtype": "Color",
+   "label": "Pwa Theme Color",
+   "default": "#0F6E5A",
+   "idx": 60
+  },
+  {
+   "fieldname": "vapid_public_key",
+   "fieldtype": "Data",
+   "label": "Vapid Public Key",
+   "idx": 61
+  },
+  {
+   "fieldname": "column_break_18",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 62
+  },
+  {
+   "fieldname": "vapid_private_key",
+   "fieldtype": "Password",
+   "label": "Vapid Private Key",
+   "idx": 63
+  },
+  {
+   "fieldname": "vapid_subject",
+   "fieldtype": "Data",
+   "label": "Vapid Subject",
+   "default": "mailto:hr@example.com",
+   "idx": 64
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "ESS Portal Admin",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "HR Manager",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "print": 1,
+   "email": 1,
+   "share": 0
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "index_web_pages_for_search": 0,
+ "row_format": "Dynamic",
+ "issingle": 1
+}

@@ -1,0 +1,4 @@
+[pre_model_sync]
+
+[post_model_sync]
+thinknxg_ess_portal.patches.v1_0.ensure_defaults

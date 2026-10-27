@@ -1,0 +1,21 @@
+{
+  "name": "thinkNXG ESS Portal",
+  "short_name": "ESS",
+  "description": "Employee self-service for thinkNXG HR",
+  "start_url": "/ess",
+  "scope": "/ess",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F4F7F6",
+  "theme_color": "#0F6E5A",
+  "icons": [
+    { "src": "/assets/thinknxg_ess_portal/ess/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/thinknxg_ess_portal/ess/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/assets/thinknxg_ess_portal/ess/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Check in", "url": "/ess/attendance/check-in" },
+    { "name": "Apply for leave", "url": "/ess/leave/apply" },
+    { "name": "Ask HR assistant", "url": "/ess/assistant" }
+  ]
+}

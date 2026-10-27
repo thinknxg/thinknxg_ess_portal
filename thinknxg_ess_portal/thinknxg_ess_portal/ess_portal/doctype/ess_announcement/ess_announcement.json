@@ -1,0 +1,238 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-10-24 12:00:00.000000",
+ "modified": "2026-10-24 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "name": "ESS Announcement",
+ "module": "ESS Portal",
+ "custom": 0,
+ "engine": "InnoDB",
+ "editable_grid": 1,
+ "field_order": [
+  "naming_series",
+  "title",
+  "category",
+  "is_published",
+  "is_pinned",
+  "column_break_45",
+  "publish_from",
+  "publish_until",
+  "image",
+  "section_break_46",
+  "audience",
+  "company",
+  "department",
+  "column_break_47",
+  "branch",
+  "designation",
+  "section_break_48",
+  "body"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "ESS-ANN-.#####",
+   "default": "ESS-ANN-.#####",
+   "hidden": 1,
+   "reqd": 1,
+   "idx": 1
+  },
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "label": "Title",
+   "reqd": 1,
+   "in_list_view": 1,
+   "idx": 2
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Select",
+   "label": "Category",
+   "options": "General\nHR\nEvent\nPolicy\nCelebration\nUrgent",
+   "default": "General",
+   "in_list_view": 1,
+   "idx": 3
+  },
+  {
+   "fieldname": "is_published",
+   "fieldtype": "Check",
+   "label": "Is Published",
+   "default": "0",
+   "in_list_view": 1,
+   "idx": 4
+  },
+  {
+   "fieldname": "is_pinned",
+   "fieldtype": "Check",
+   "label": "Is Pinned",
+   "default": "0",
+   "idx": 5
+  },
+  {
+   "fieldname": "column_break_45",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 6
+  },
+  {
+   "fieldname": "publish_from",
+   "fieldtype": "Datetime",
+   "label": "Publish From",
+   "idx": 7
+  },
+  {
+   "fieldname": "publish_until",
+   "fieldtype": "Datetime",
+   "label": "Publish Until",
+   "idx": 8
+  },
+  {
+   "fieldname": "image",
+   "fieldtype": "Attach Image",
+   "label": "Image",
+   "idx": 9
+  },
+  {
+   "fieldname": "section_break_46",
+   "fieldtype": "Section Break",
+   "label": "Audience",
+   "idx": 10
+  },
+  {
+   "fieldname": "audience",
+   "fieldtype": "Select",
+   "label": "Audience",
+   "options": "All Employees\nCompany\nDepartment\nBranch\nDesignation",
+   "default": "All Employees",
+   "idx": 11
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "depends_on": "eval:doc.audience=='Company'",
+   "idx": 12
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Department",
+   "depends_on": "eval:doc.audience=='Department'",
+   "idx": 13
+  },
+  {
+   "fieldname": "column_break_47",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 14
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch",
+   "depends_on": "eval:doc.audience=='Branch'",
+   "idx": 15
+  },
+  {
+   "fieldname": "designation",
+   "fieldtype": "Link",
+   "label": "Designation",
+   "options": "Designation",
+   "depends_on": "eval:doc.audience=='Designation'",
+   "idx": 16
+  },
+  {
+   "fieldname": "section_break_48",
+   "fieldtype": "Section Break",
+   "label": "Body",
+   "idx": 17
+  },
+  {
+   "fieldname": "body",
+   "fieldtype": "Text Editor",
+   "label": "Body",
+   "reqd": 1,
+   "idx": 18
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "ESS Portal Admin",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "HR Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "HR User",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "Employee",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "print": 1,
+   "email": 1,
+   "share": 0
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "index_web_pages_for_search": 0,
+ "row_format": "Dynamic",
+ "autoname": "naming_series:",
+ "naming_rule": "By \"Naming Series\" field",
+ "title_field": "title"
+}

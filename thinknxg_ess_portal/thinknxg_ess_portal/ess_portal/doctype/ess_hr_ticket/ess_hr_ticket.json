@@ -1,0 +1,367 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-10-24 12:00:00.000000",
+ "modified": "2026-10-24 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "name": "ESS HR Ticket",
+ "module": "ESS Portal",
+ "custom": 0,
+ "engine": "InnoDB",
+ "editable_grid": 1,
+ "field_order": [
+  "naming_series",
+  "subject",
+  "category",
+  "priority",
+  "status",
+  "column_break_20",
+  "employee",
+  "employee_name",
+  "department",
+  "raised_by",
+  "assigned_to",
+  "section_break_21",
+  "description",
+  "section_break_22",
+  "is_confidential",
+  "sla_status",
+  "first_response_due",
+  "resolution_due",
+  "column_break_23",
+  "first_responded_on",
+  "resolved_on",
+  "closed_on",
+  "escalated",
+  "escalation_level",
+  "section_break_24",
+  "rating",
+  "rating_comment",
+  "column_break_25",
+  "reopen_count",
+  "channel",
+  "client_request_id"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "ESS-TKT-.YYYY.-.#####",
+   "default": "ESS-TKT-.YYYY.-.#####",
+   "hidden": 1,
+   "reqd": 1,
+   "idx": 1
+  },
+  {
+   "fieldname": "subject",
+   "fieldtype": "Data",
+   "label": "Subject",
+   "reqd": 1,
+   "in_list_view": 1,
+   "idx": 2
+  },
+  {
+   "fieldname": "category",
+   "fieldtype": "Link",
+   "label": "Category",
+   "options": "ESS HR Ticket Category",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "idx": 3
+  },
+  {
+   "fieldname": "priority",
+   "fieldtype": "Select",
+   "label": "Priority",
+   "options": "Low\nMedium\nHigh\nUrgent",
+   "default": "Medium",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "idx": 4
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Open\nAssigned\nIn Progress\nWaiting for Employee\nResolved\nClosed",
+   "default": "Open",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "idx": 5
+  },
+  {
+   "fieldname": "column_break_20",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 6
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1,
+   "in_standard_filter": 1,
+   "idx": 7
+  },
+  {
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "fetch_from": "employee.employee_name",
+   "read_only": 1,
+   "idx": 8
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Department",
+   "fetch_from": "employee.department",
+   "read_only": 1,
+   "idx": 9
+  },
+  {
+   "fieldname": "raised_by",
+   "fieldtype": "Link",
+   "label": "Raised By",
+   "options": "User",
+   "read_only": 1,
+   "idx": 10
+  },
+  {
+   "fieldname": "assigned_to",
+   "fieldtype": "Link",
+   "label": "Assigned To",
+   "options": "User",
+   "in_standard_filter": 1,
+   "idx": 11
+  },
+  {
+   "fieldname": "section_break_21",
+   "fieldtype": "Section Break",
+   "label": "Details",
+   "idx": 12
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description",
+   "idx": 13
+  },
+  {
+   "fieldname": "section_break_22",
+   "fieldtype": "Section Break",
+   "label": "Service Level",
+   "idx": 14
+  },
+  {
+   "fieldname": "is_confidential",
+   "fieldtype": "Check",
+   "label": "Is Confidential",
+   "read_only": 1,
+   "fetch_from": "category.is_confidential",
+   "idx": 15
+  },
+  {
+   "fieldname": "sla_status",
+   "fieldtype": "Select",
+   "label": "Sla Status",
+   "options": "On Track\nAt Risk\nBreached",
+   "default": "On Track",
+   "read_only": 1,
+   "idx": 16
+  },
+  {
+   "fieldname": "first_response_due",
+   "fieldtype": "Datetime",
+   "label": "First Response Due",
+   "read_only": 1,
+   "idx": 17
+  },
+  {
+   "fieldname": "resolution_due",
+   "fieldtype": "Datetime",
+   "label": "Resolution Due",
+   "read_only": 1,
+   "idx": 18
+  },
+  {
+   "fieldname": "column_break_23",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 19
+  },
+  {
+   "fieldname": "first_responded_on",
+   "fieldtype": "Datetime",
+   "label": "First Responded On",
+   "read_only": 1,
+   "idx": 20
+  },
+  {
+   "fieldname": "resolved_on",
+   "fieldtype": "Datetime",
+   "label": "Resolved On",
+   "read_only": 1,
+   "idx": 21
+  },
+  {
+   "fieldname": "closed_on",
+   "fieldtype": "Datetime",
+   "label": "Closed On",
+   "read_only": 1,
+   "idx": 22
+  },
+  {
+   "fieldname": "escalated",
+   "fieldtype": "Check",
+   "label": "Escalated",
+   "read_only": 1,
+   "idx": 23
+  },
+  {
+   "fieldname": "escalation_level",
+   "fieldtype": "Int",
+   "label": "Escalation Level",
+   "read_only": 1,
+   "idx": 24
+  },
+  {
+   "fieldname": "section_break_24",
+   "fieldtype": "Section Break",
+   "label": "Feedback",
+   "idx": 25
+  },
+  {
+   "fieldname": "rating",
+   "fieldtype": "Rating",
+   "label": "Rating",
+   "idx": 26
+  },
+  {
+   "fieldname": "rating_comment",
+   "fieldtype": "Small Text",
+   "label": "Rating Comment",
+   "idx": 27
+  },
+  {
+   "fieldname": "column_break_25",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 28
+  },
+  {
+   "fieldname": "reopen_count",
+   "fieldtype": "Int",
+   "label": "Reopen Count",
+   "read_only": 1,
+   "idx": 29
+  },
+  {
+   "fieldname": "channel",
+   "fieldtype": "Select",
+   "label": "Channel",
+   "options": "Portal\nAssistant\nEmail",
+   "default": "Portal",
+   "idx": 30
+  },
+  {
+   "fieldname": "client_request_id",
+   "fieldtype": "Data",
+   "label": "Client Request Id",
+   "read_only": 1,
+   "hidden": 1,
+   "search_index": 1,
+   "idx": 31
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "ESS Portal Admin",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "HR Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "ESS HR Agent",
+   "read": 1,
+   "write": 1,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "ESS Payroll Officer",
+   "read": 1,
+   "write": 1,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "Employee",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "print": 1,
+   "email": 1,
+   "share": 0
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "index_web_pages_for_search": 0,
+ "row_format": "Dynamic",
+ "autoname": "naming_series:",
+ "naming_rule": "By \"Naming Series\" field",
+ "title_field": "subject",
+ "track_changes": 1
+}
