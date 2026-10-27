@@ -59,7 +59,7 @@ def is_agent(user=None):
 
 def get_employee(user=None, required=True):
     user = user or frappe.session.user
-    cache = frappe.local.__dict__.setdefault("ess_employee_cache", {})
+    cache = _local_cache("ess_employee_cache")
     if user not in cache:
         meta = frappe.get_meta("Employee")
         fields = [f for f in EMP_FIELDS if f == "name" or meta.has_field(f)]
@@ -74,7 +74,7 @@ def get_employee(user=None, required=True):
 def team_employees(user=None, recursive=True):
     """Employees the user manages: reporting line (recursive) + departments they head."""
     user = user or frappe.session.user
-    cache = frappe.local.__dict__.setdefault("ess_team_cache", {})
+    cache = _local_cache("ess_team_cache")
     key = (user, recursive)
     if key in cache:
         return cache[key]
@@ -137,3 +137,12 @@ def capabilities(user=None):
 
 def has_app_permission():
     return frappe.session.user != "Guest"
+
+
+def _local_cache(key):
+    """Per-request cache on frappe.local (v16's local has no __dict__)."""
+    cache = getattr(frappe.local, key, None)
+    if cache is None:
+        cache = {}
+        setattr(frappe.local, key, cache)
+    return cache
