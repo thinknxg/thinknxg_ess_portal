@@ -1,18 +1,18 @@
 # thinkNXG ESS Portal
 
-Enterprise Employee Self-Service for **thinkNXG HR (Frappe HR v16)** — a Vue 3 + TypeScript PWA served at `/ess` by a custom Frappe app, for employees, managers and HR.
+Enterprise Employee Self-Service for **thinkNXG HR v16** — a Vue 3 + TypeScript PWA served at `/ess` by a custom thinkNXG app, for employees, managers and HR.
 
-The portal is an experience layer. Attendance, leave, payroll, expenses, performance and workflows stay in Frappe HR; the app never re-implements leave maths, payroll or accounting. Custom DocTypes exist only for capabilities HRMS doesn't have (helpdesk, letters, recognition, AI audit, policies, delegation).
+The portal is an experience layer. Attendance, leave, payroll, expenses, performance and workflows stay in thinkNXG HR; the app never re-implements leave maths, payroll or accounting. Custom DocTypes exist only for capabilities thinkNXG HR doesn't have (helpdesk, letters, recognition, AI audit, policies, delegation).
 
 ```
-Vue 3 PWA (/ess)  ──  Router guards, Pinia, in-memory server cache, offline queue
+Vue 3 PWA (/ess)    ──  Router guards, Pinia, in-memory server cache, offline queue
         │  same-origin session + CSRF, no API keys in the browser
-Frappe API layer  ──  thinknxg_ess_portal.api.*  (identity → scope → validation → idempotency → audit)
+thinkNXG API layer  ──  thinknxg_ess_portal.api.*  (identity → scope → validation → idempotency → audit)
         │
-Native HRMS       ──  Employee, Checkin, Attendance(+Request), Leave Application/Allocation/Ledger,
-                      Salary Slip, Expense Claim, Employee Advance, Shift Request, Goal, Appraisal, Training
-Custom ESS        ──  29 DocTypes in module "ESS Portal"
-Infra             ──  MariaDB · Redis (cache, rate limits, AI transcripts) · RQ jobs · scheduler · private files
+Native thinkNXG HR  ──  Employee, Checkin, Attendance(+Request), Leave Application/Allocation/Ledger,
+                        Salary Slip, Expense Claim, Employee Advance, Shift Request, Shift Assignment, Goal, Appraisal, Training
+Custom ESS          ──  39 DocTypes in module "ESS Portal"
+Infra               ──  MariaDB · Redis (cache, rate limits, AI transcripts) · RQ jobs · scheduler · private files
 ```
 
 ## Install
@@ -100,13 +100,13 @@ Profile: ESS Profile Change Request · ESS Profile Change Item (child)
 Check-in control: ESS Checkin Location · ESS Checkin Policy (+ ESS Checkin Policy Location) · ESS Checkin Log
 Roster: ESS Roster (+ ESS Roster Requirement) · ESS Roster Entry · ESS Shift Pattern (+ ESS Shift Pattern Step) · ESS Roster Change Request
 
-Custom fields: `Department.ess_department_head`, `Attendance Request.ess_status` / `ess_review_comment` (HRMS has no rejected state for drafts), `Shift Assignment.ess_roster` (marks assignments a roster owns), `Shift Type.ess_code` / `ess_color` (grid labels), `Employee Checkin.ess_source` / `ess_accuracy` / `ess_location` / `ess_distance` / `ess_log` (portal punch context; device and Desk punches leave them empty).
+Custom fields: `Department.ess_department_head`, `Attendance Request.ess_status` / `ess_review_comment` (thinkNXG HR has no rejected state for drafts), `Shift Assignment.ess_roster` (marks assignments a roster owns), `Shift Type.ess_code` / `ess_color` (grid labels), `Employee Checkin.ess_source` / `ess_accuracy` / `ess_location` / `ess_distance` / `ess_log` (portal punch context; device and Desk punches leave them empty).
 
 ## How the key flows work
 
 - **Check-in** — see *Employee check-in control* below. Server time only; never queued offline.
 - **Leave** — balances from `get_leave_details`, days from `get_number_of_leave_days`, balance from `get_leave_balance_on`; overlap/holiday preview recalculated server-side on every date change and again at submit.
-- **Approvals** — a request is actionable only if it is in the caller's computed pending list (approver field, reporting line, HR role, or active delegation). If a Frappe Workflow exists for the DocType, the matching workflow action is applied instead of setting status. Rejections require a reason. Every decision writes an ESS Audit Event.
+- **Approvals** — a request is actionable only if it is in the caller's computed pending list (approver field, reporting line, HR role, or active delegation). If a thinkNXG Workflow exists for the DocType, the matching workflow action is applied instead of setting status. Rejections require a reason. Every decision writes an ESS Audit Event.
 - **Delegation** — hourly job shares open documents with the delegate and revokes on expiry.
 - **Letters** — HR-authored Jinja templates (validated, versioned on change); employees pick a template, never fields or code. Eligibility (status, service months, monthly limit), optional approval by template role, PDF rendered in a background job, stored as a private File, verification code + public `/ess-verify` page (rate-limited, toggleable).
 - **Helpdesk** — SLA due dates from category; transition map enforced in the controller; 15-minute escalation job (level 1 → category escalation user, level 2+ → HR Managers); internal notes never leave the server for employees; auto-close after N days.
@@ -136,7 +136,7 @@ Per-employee **ESS Checkin Policy**: portal access (Inherit/Allow/Deny), GPS (In
 
 **Channels are independent.** These rules apply only to `attendance.check_in`/`check_out`. Biometric devices posting to the Employee Checkin API and HR staff in Desk are untouched, so turning portal check-in off never stops a device integration.
 
-**Frappe HR's own rule still applies.** If *HR Settings → Allow Geolocation Tracking* is on, HRMS validates every Employee Checkin against the Shift Location radius and requires coordinates. An ESS GPS exemption or an extra ESS location cannot override that; the portal reports it as `NATIVE_VALIDATION` and the settings page warns when it is on. Turn it off if ESS should be the single decision-maker.
+**thinkNXG HR's own rule still applies.** If *HR Settings → Allow Geolocation Tracking* is on, thinkNXG HR validates every Employee Checkin against the Shift Location radius and requires coordinates. An ESS GPS exemption or an extra ESS location cannot override that; the portal reports it as `NATIVE_VALIDATION` and the settings page warns when it is on. Turn it off if ESS should be the single decision-maker.
 
 **About GPS.** Browsers share location only over HTTPS (or localhost) and only with the employee's permission; the page explains each failure (blocked, unavailable, timeout, insecure). The server re-checks every coordinate, but a phone's reported position can't prove physical presence. Risk flags (unrealistic ±0 m accuracy, travel faster than *max travel speed*, coordinates identical to another day's) are logged for review and can optionally block.
 
@@ -146,10 +146,10 @@ Per-employee **ESS Checkin Policy**: portal access (Inherit/Allow/Deny), GPS (In
 
 **Managers and HR** use the **Roster planner**: paint shifts with click, drag or keyboard; apply rotation patterns (e.g. 2 days, 2 evenings, 1 night, 2 off) with a per-person stagger; copy a previous roster (whole weeks repeat so weekdays line up); set coverage needs per shift and weekday. Live checks cover overlapping shifts, minimum rest, maximum consecutive days, maximum weekly hours, coverage gaps, leave clashes, people on two rosters, default shifts on rest days, and manual Shift Assignments in the way. Managers can only roster their own reporting line; HR works within its scope.
 
-**Publishing** writes native **Shift Assignments**, one per run of identical days, tagged with `ess_roster`, so Frappe HR auto-attendance, shift-based check-in linking and payroll keep working as they do today:
+**Publishing** writes native **Shift Assignments**, one per run of identical days, tagged with `ess_roster`, so thinkNXG HR auto-attendance, shift-based check-in linking and payroll keep working as they do today:
 - Only today onward is written. Past days are locked once published and never rewritten.
 - Republishing ends or cancels the roster's own future assignments and recreates them; untagged (manual) assignments are never touched unless HR ticks *trim manual assignments*, which ends or deactivates them with a comment.
-- Rest days get no assignment. If an employee also has a **default shift**, Frappe HR falls back to it on rest days and may mark absence, so the planner warns; clear default shifts for rostered staff.
+- Rest days get no assignment. If an employee also has a **default shift**, thinkNXG HR falls back to it on rest days and may mark absence, so the planner warns; clear default shifts for rostered staff.
 - People whose plan changed are notified. Each publish is recorded in ESS Audit Event.
 
 ## AI HR assistant
@@ -171,7 +171,7 @@ EN/AR with full RTL, light/dark/system themes, keyboard command palette (Ctrl/�
 
 ## Tests
 
-- `thinknxg_ess_portal/tests/test_pure.py` — 17 unit tests for geofence maths, accuracy rules, risk flags, shift windows (including overnight and Frappe's timedelta times), roster rules, coverage and rotation patterns. Runs without a bench: `python -m pytest thinknxg_ess_portal/tests/test_pure.py`.
+- `thinknxg_ess_portal/tests/test_pure.py` — 17 unit tests for geofence maths, accuracy rules, risk flags, shift windows (including overnight and thinkNXG's timedelta times), roster rules, coverage and rotation patterns. Runs without a bench: `python -m pytest thinknxg_ess_portal/tests/test_pure.py`.
 - `thinknxg_ess_portal/tests/test_checkin_roster.py` — integration tests: global off vs. Allow override, *Enforce global* ignoring overrides, Deny override writing a denied log, outside-geofence and poor-accuracy refusals, GPS exemption, shift-window enforcement, managers blocked from rostering outside their team, publish creating tagged assignments and republish replacing them, swap needing colleague acceptance before it reaches the manager.
 
 - `thinknxg_ess_portal/tests/test_security.py` — colleague ticket isolation, confidential tickets hidden from agents, internal notes hidden, manager scope = reporting line, non-manager blocked from team member, unauthorised approval blocked, protected profile fields rejected, idempotent duplicate submission, assistant refusal for a colleague's payslip, AI tool identity stripping, self-recognition blocked.
@@ -180,8 +180,8 @@ EN/AR with full RTL, light/dark/system themes, keyboard command palette (Ctrl/�
 
 ## Notes and assumptions to verify on your bench
 
-- Python package is `thinknxg_ess_portal` (Frappe requires the package to match the app name), so methods are `thinknxg_ess_portal.api.*` rather than `ess_portal.api.*`.
-- Field names follow HRMS v16 and are guarded with `meta.has_field` where they vary (Checkin latitude/longitude, Shift Location, Overtime Slip, Employee Benefit Ledger, Goal, Onboarding). Confirm against your installed release and customisations.
+- Python package is `thinknxg_ess_portal` (thinkNXG requires the package to match the app name), so methods are `thinknxg_ess_portal.api.*` rather than `ess_portal.api.*`.
+- Field names follow thinkNXG HR v16 and are guarded with `meta.has_field` where they vary (Checkin latitude/longitude, Shift Location, Overtime Slip, Employee Benefit Ledger, Goal, Onboarding). Confirm against your installed release and customisations.
 - Expense claims are created as drafts with the company's default payable account; submission/payment stays with Accounts unless *Auto-submit approved expenses* is enabled. Employee Advance uses the company's default advance account.
 - The UI uses its own lightweight component set rather than `frappe-ui`, to keep the build reproducible; it can be swapped in later without touching the API layer.
 - Realtime events are published (`ess_notification`, `ess_ticket_update`); the SPA polls unread counts every 60 s and does not require socket.io.

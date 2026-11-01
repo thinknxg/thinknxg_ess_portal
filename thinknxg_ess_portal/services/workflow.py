@@ -1,7 +1,7 @@
 """Approval engine for the manager workspace.
 
 Authorisation is resolved per document on the server: native approver fields, the reporting line,
-HR roles and active delegations. If a Frappe Workflow is configured for the DocType, the portal applies
+HR roles and active delegations. If a thinkNXG Workflow is configured for the DocType, the portal applies
 the matching workflow action instead of setting status directly, so organisational workflows stay authoritative.
 """
 import frappe

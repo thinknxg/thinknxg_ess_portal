@@ -3,7 +3,7 @@ import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { fileURLToPath, URL } from "node:url";
 
-// Built assets are served by Frappe from /assets/thinknxg_ess_portal/ess/
+// Built assets are served by thinkNXG from /assets/thinknxg_ess_portal/ess/
 export default defineConfig(({ command }) => ({
   plugins: [vue()],
   base: command === "build" ? "/assets/thinknxg_ess_portal/ess/" : "/",

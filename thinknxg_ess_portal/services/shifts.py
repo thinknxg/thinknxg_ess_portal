@@ -1,6 +1,6 @@
 """Who works when: native Shift Assignments, default shifts, published roster rest days, holidays and leave.
 
-Native Frappe HR stays authoritative. Rosters reach attendance only through the Shift Assignments they publish.
+Native thinkNXG HR stays authoritative. Rosters reach attendance only through the Shift Assignments they publish.
 """
 from collections import defaultdict
 from datetime import date, datetime, timedelta

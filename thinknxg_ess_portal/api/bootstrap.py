@@ -30,7 +30,7 @@ def get_boot():
     return {
         "user": {"name": user, "full_name": frappe.utils.get_fullname(user),
                  "image": frappe.db.get_value("User", user, "user_image"), "email": user,
-                 # Desk (/app) is only for System Users; Website Users would be bounced back by Frappe.
+                 # Desk (/app) is only for System Users; Website Users would be bounced back by thinkNXG.
                  "desk_access": frappe.db.get_value("User", user, "user_type") == "System User"},
         "employee": {k: (str(v) if v is not None else None) for k, v in (emp or {}).items()
                      if k in ("name", "employee_name", "first_name", "designation", "department", "company",

@@ -50,7 +50,7 @@
    "fieldtype": "Link",
    "label": "Shift Location",
    "options": "Shift Location",
-   "description": "Optional. Coordinates and radius are copied from this HRMS Shift Location when left empty.",
+   "description": "Optional. Coordinates and radius are copied from this thinkNXG HR Shift Location when left empty.",
    "idx": 3
   },
   {

@@ -37,7 +37,7 @@ async function create() {
 
 <template>
   <div class="page">
-    <PageHeader title="Roster planner" subtitle="Plan shifts and rest days, check coverage and working-time rules, then publish to Frappe HR.">
+    <PageHeader title="Roster planner" subtitle="Plan shifts and rest days, check coverage and working-time rules, then publish to thinkNXG HR.">
       <button class="btn primary" @click="start">New roster</button>
     </PageHeader>
     <ErrorState :error="error" @retry="reload" />
