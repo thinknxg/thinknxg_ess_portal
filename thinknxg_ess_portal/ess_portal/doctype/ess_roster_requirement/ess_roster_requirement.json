@@ -1,0 +1,56 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-10-24 12:00:00.000000",
+ "modified": "2026-10-24 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "name": "ESS Roster Requirement",
+ "module": "ESS Portal",
+ "custom": 0,
+ "engine": "InnoDB",
+ "editable_grid": 1,
+ "field_order": [
+  "shift_type",
+  "weekday",
+  "min_staff"
+ ],
+ "fields": [
+  {
+   "fieldname": "shift_type",
+   "fieldtype": "Link",
+   "label": "Shift Type",
+   "options": "Shift Type",
+   "reqd": 1,
+   "in_list_view": 1,
+   "idx": 1
+  },
+  {
+   "fieldname": "weekday",
+   "fieldtype": "Select",
+   "label": "Weekday",
+   "options": "All days\nSunday\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday",
+   "default": "All days",
+   "in_list_view": 1,
+   "idx": 2
+  },
+  {
+   "fieldname": "min_staff",
+   "fieldtype": "Int",
+   "label": "Min Staff",
+   "reqd": 1,
+   "default": "1",
+   "in_list_view": 1,
+   "idx": 3
+  }
+ ],
+ "permissions": [],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "index_web_pages_for_search": 0,
+ "row_format": "Dynamic",
+ "istable": 1
+}

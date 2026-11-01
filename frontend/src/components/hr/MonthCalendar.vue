@@ -3,7 +3,7 @@
 import { computed } from "vue";
 import { lang } from "@/i18n";
 
-export interface DayCell { date: string; tone?: string; label?: string; marks?: { tone: string; text: string }[]; muted?: boolean }
+export interface DayCell { date: string; tone?: string; color?: string; label?: string; marks?: { tone: string; text: string }[]; muted?: boolean }
 const props = defineProps<{ year: number; month: number; cells: Record<string, DayCell>; selected?: string | null; weekend?: number[] }>();
 const emit = defineEmits<{ select: [date: string]; prev: []; next: [] }>();
 
@@ -31,7 +31,8 @@ const today = new Date().toISOString().slice(0, 10);
       <div v-for="w in weekdays" :key="w" class="wd" role="columnheader">{{ w }}</div>
       <template v-for="(d, i) in grid" :key="i">
         <div v-if="!d" class="cell blank" aria-hidden="true" />
-        <button v-else class="cell" role="gridcell" :class="[cells[d]?.tone, { sel: selected === d, today: d === today, wknd: (weekend || [5, 6]).includes(i % 7), muted: cells[d]?.muted }]"
+        <button v-else class="cell" role="gridcell" :class="[cells[d]?.tone, { sel: selected === d, today: d === today, wknd: (weekend || [5, 6]).includes(i % 7), muted: cells[d]?.muted, custom: cells[d]?.color }]"
+                :style="cells[d]?.color ? { '--cc': cells[d]?.color } : undefined"
                 :aria-selected="selected === d" :aria-label="`${d} ${cells[d]?.label || ''}`" @click="emit('select', d)">
           <span class="dn num">{{ +d.slice(8) }}</span>
           <span v-if="cells[d]?.label" class="lbl">{{ cells[d]?.label }}</span>
@@ -63,5 +64,6 @@ const today = new Date().toISOString().slice(0, 10);
 .bad { border-inline-start: 3px solid var(--pom); } .marks .bad { background: var(--pom); border: 0; }
 .info { border-inline-start: 3px solid var(--info); } .marks .info { background: var(--info); border: 0; }
 .brand { border-inline-start: 3px solid var(--brand); } .marks .brand { background: var(--brand); border: 0; }
+.cell.custom { border-inline-start: 3px solid var(--cc); background: color-mix(in srgb, var(--cc) 7%, var(--surface)); }
 @media (max-width: 640px) { .cell { min-height: 46px; padding: 4px; } .lbl { display: none; } }
 </style>

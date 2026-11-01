@@ -35,6 +35,15 @@ def _collect(emp):
                             fields=["name", "template"]):
         items.append(_i(f"doc:{r.name}", "document_ready", _("{0} is ready to download").format(r.template), "ready",
                         None, "/ess/documents", r.name))
+    for r in frappe.get_all("ESS Roster Change Request", filters={"swap_with": emp.name, "status": "Pending Colleague"},
+                            fields=["name", "employee_name", "from_date", "to_date"]):
+        items.append(_i(f"swap:{r.name}", "swap_request", _("{0} asked to swap shifts with you").format(r.employee_name),
+                        "action", r.from_date, f"/ess/roster?swap={r.name}", r.name, priority="high"))
+    for r in frappe.get_all("ESS Roster Change Request", filters={"employee": emp.name,
+                                                                  "status": ["in", ["Pending Colleague", "Pending Approval"]]},
+                            fields=["name", "request_type", "from_date", "status"]):
+        items.append(_i(f"rcr:{r.name}", "roster_change_pending", _("{0}: {1}").format(_(r.request_type), _(r.status)),
+                        "pending", r.from_date, "/ess/roster", r.name, priority="low"))
     from thinknxg_ess_portal.api.policies import _pending_for
     for p in _pending_for(emp):
         items.append(_i(f"policy:{p['name']}", "policy_ack", _("Acknowledge policy: {0}").format(p["policy_title"]),

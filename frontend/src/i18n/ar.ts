@@ -44,5 +44,12 @@ const ar: Record<string, string> = {
   "Page not found": "الصفحة غير موجودة", "Go home": "العودة للرئيسية",
   "Helpful": "مفيد", "Not helpful": "غير مفيد", "Waiting to send": "بانتظار الإرسال",
   "Celebrations this week": "مناسبات هذا الأسبوع", "Birthday": "عيد ميلاد", "Work anniversary": "ذكرى العمل",
+  "My roster": "جدول مناوباتي", "Holidays": "العطلات", "Roster planner": "تخطيط المناوبات", "Check-in control": "التحكم في تسجيل الحضور",
+  "Check-in audit": "سجل تسجيل الحضور", "Upcoming roster": "المناوبات القادمة", "Today's shift": "مناوبة اليوم",
+  "Location verification": "التحقق من الموقع", "Rest day": "يوم راحة", "On Duty": "في الدوام", "Off Duty": "خارج الدوام",
+  "Swap with colleague": "تبديل مع زميل", "Change shift": "تغيير المناوبة",
+  "Request rest day": "طلب يوم راحة", "Publish": "نشر", "Republish": "إعادة النشر", "Shift window": "نافذة المناوبة",
+  "Awaiting first punch": "بانتظار أول بصمة", "Check my location": "تحقق من موقعي",
+  "Roster changes": "تعديلات المناوبات", "Shift Window Open": "نافذة المناوبة مفتوحة", "Scheduled": "مجدول", "Rest Day": "يوم راحة",
 };
 export default ar;

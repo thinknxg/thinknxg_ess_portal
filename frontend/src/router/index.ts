@@ -12,7 +12,9 @@ const routes: RouteRecordRaw[] = [
   { path: "/settings", name: "settings", component: () => import("@/pages/MySettingsPage.vue"), meta: { title: "Settings" } },
 
   { path: "/attendance", name: "attendance", component: () => import("@/pages/attendance/AttendancePage.vue"), meta: { title: "Attendance", module: "attendance" } },
-  { path: "/attendance/check-in", name: "checkin", component: () => import("@/pages/attendance/CheckInPage.vue"), meta: { title: "Check in", module: "checkin" } },
+  { path: "/attendance/check-in", name: "checkin", component: () => import("@/pages/attendance/CheckInPage.vue"), meta: { title: "Check in", module: "attendance" } },
+  { path: "/roster", name: "my-roster", component: () => import("@/pages/roster/MyRosterPage.vue"), meta: { title: "My roster", module: "roster" } },
+  { path: "/holidays", name: "holidays", component: () => import("@/pages/HolidaysPage.vue"), meta: { title: "Holidays" } },
   { path: "/attendance/corrections", name: "corrections", component: () => import("@/pages/attendance/CorrectionsPage.vue"), meta: { title: "Corrections", module: "attendance" } },
 
   { path: "/leave", name: "leave", component: () => import("@/pages/leave/LeaveOverviewPage.vue"), meta: { title: "Leave", module: "leave" } },
@@ -39,12 +41,16 @@ const routes: RouteRecordRaw[] = [
   { path: "/team/approvals", name: "approvals", component: () => import("@/pages/team/ApprovalsPage.vue"), meta: { title: "Approvals", cap: "manager|hr" } },
   { path: "/team/calendar", name: "team-calendar", component: () => import("@/pages/leave/LeaveCalendarPage.vue"), props: { team: true }, meta: { title: "Leave calendar", cap: "manager" } },
   { path: "/team/analytics", name: "team-analytics", component: () => import("@/pages/team/TeamAnalyticsPage.vue"), meta: { title: "Team analytics", cap: "manager", module: "analytics" } },
+  { path: "/team/roster", name: "rosters", component: () => import("@/pages/team/RosterListPage.vue"), meta: { title: "Roster planner", cap: "planner", module: "roster" } },
+  { path: "/team/roster/:name", name: "roster-planner", component: () => import("@/pages/team/RosterPlannerPage.vue"), meta: { title: "Roster planner", cap: "planner", module: "roster" } },
   { path: "/team/member/:employee", name: "team-member", component: () => import("@/pages/team/TeamMemberPage.vue"), meta: { title: "Team overview", cap: "manager|hr" } },
 
   { path: "/hr/tickets", name: "hr-tickets", component: () => import("@/pages/hr/ServiceDeskPage.vue"), meta: { title: "Service desk", cap: "agent", module: "helpdesk" } },
   { path: "/hr/tickets/:name", name: "hr-ticket", component: () => import("@/pages/support/TicketPage.vue"), meta: { title: "Service desk", cap: "agent", module: "helpdesk" } },
   { path: "/hr/employees", name: "hr-employees", component: () => import("@/pages/hr/EmployeesPage.vue"), meta: { title: "Employees", cap: "hr" } },
   { path: "/hr/documents", name: "hr-documents", component: () => import("@/pages/hr/DocumentAdminPage.vue"), meta: { title: "Document admin", cap: "hr", module: "documents" } },
+  { path: "/hr/checkin", name: "hr-checkin", component: () => import("@/pages/hr/CheckinControlPage.vue"), meta: { title: "Check-in control", cap: "hr" } },
+  { path: "/hr/checkin-log", name: "hr-checkin-log", component: () => import("@/pages/hr/CheckinLogPage.vue"), meta: { title: "Check-in audit", cap: "hr" } },
   { path: "/hr/announcements", name: "hr-announcements", component: () => import("@/pages/hr/AnnouncementsAdminPage.vue"), meta: { title: "Announcements", cap: "hr" } },
   { path: "/hr/analytics", name: "hr-analytics", component: () => import("@/pages/hr/HrAnalyticsPage.vue"), meta: { title: "HR analytics", cap: "hr", module: "analytics" } },
   { path: "/hr/settings", name: "hr-settings", component: () => import("@/pages/hr/PortalSettingsPage.vue"), meta: { title: "Portal settings", cap: "admin" } },

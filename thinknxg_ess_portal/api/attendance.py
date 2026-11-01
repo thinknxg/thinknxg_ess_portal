@@ -1,90 +1,74 @@
-import math
 import frappe
 from frappe import _
-from frappe.utils import (now_datetime, today, getdate, get_first_day, get_last_day, add_to_date, cint, flt,
-                          get_datetime, date_diff, add_days)
+from frappe.utils import add_days, add_to_date, cint, date_diff, get_datetime, get_last_day, getdate, now_datetime, today
 from thinknxg_ess_portal.api._guard import guard, page
-from thinknxg_ess_portal.services import identity, hrms
+from thinknxg_ess_portal.services import checkin_policy, geo, hrms, identity, shifts
 from thinknxg_ess_portal.services.idempotency import run_once
+from thinknxg_ess_portal.services.ratelimit import check_rate
 
 
-def _checkins(employee, date):
-    return frappe.get_all("Employee Checkin", filters={"employee": employee, "time": ["between", [
-        f"{date} 00:00:00", f"{date} 23:59:59"]]}, fields=["name", "time", "log_type", "device_id"],
-                          order_by="time asc")
+def _logs_since(employee, since):
+    return frappe.get_all("Employee Checkin", filters={"employee": employee, "time": [">=", since]},
+                          fields=["name", "time", "log_type", "device_id"], order_by="time asc")
+
+
+def _status_label(day, cur, st, on_leave):
+    if cur and st.open_in:
+        return "On Duty"
+    if cur:
+        return "Shift Window Open"
+    if on_leave:
+        return "On Leave"
+    if day["rest_day"]:
+        return "Rest Day"
+    if day["holiday"] and not day["windows"]:
+        return "Holiday"
+    if st.open_in:
+        return "Checked In"
+    if day["windows"]:
+        return "Scheduled"
+    return "Off Duty"
 
 
 def _today_state(emp):
-    d = today()
-    logs = _checkins(emp.name, d)
-    shift = hrms.active_shift(emp.name, d)
+    now = now_datetime()
+    d = now.date()
+    p = checkin_policy.resolve(emp.name, now)
+    st = checkin_policy.session_state(emp.name, now)
+    cur = shifts.current_window(emp.name, now)
+    nxt = shifts.next_window(emp.name, now)
+    upcoming_days = shifts.plan([emp.name], d, add_days(d, 6))[emp.name]
+    day = upcoming_days[0]
+    since = min(get_datetime(f"{d} 00:00:00"), get_datetime(st.open_in.time) if st.open_in else now)
+    logs = _logs_since(emp.name, since)
     att = frappe.db.get_value("Attendance", {"employee": emp.name, "attendance_date": d, "docstatus": 1},
                               ["status", "in_time", "out_time", "late_entry", "early_exit"], as_dict=True)
-    on_leave = frappe.db.exists("Leave Application", {"employee": emp.name, "docstatus": 1, "status": "Approved",
-                                                      "from_date": ["<=", d], "to_date": [">=", d]})
-    last = logs[-1].log_type if logs else None
-    s = identity.settings()
+    on_leave = bool(day["leave"] and day["leave"]["status"] == "Approved" and not day["leave"]["half_day"])
+    ref = cur or (day["windows"][0] if day["windows"] else None)
+    cands = checkin_policy.candidate_locations(emp, p, ref["location"] if ref else None)
+    locs = [{"name": c["name"], "radius": c["radius"], "source": c["source"]} for c in cands]
+    shift = None
+    if ref:
+        shift = {"shift_type": ref["shift_type"], "start_time": ref["start"].strftime("%H:%M:%S"),
+                 "end_time": ref["end"].strftime("%H:%M:%S"), "code": ref["code"], "color": ref["color"]}
+    first_in = next((l.time for l in logs if l.log_type == "IN"), None)
     return {
-        "date": d, "shift": {k: v for k, v in (shift or {}).items() if k != "location"} if shift else None,
-        "geofence": {"name": shift["location"].location_name, "radius": shift["location"].checkin_radius}
-        if shift and shift.get("location") else None,
-        "logs": [{"time": str(l.time), "log_type": l.log_type} for l in logs],
-        "next_action": "OUT" if last == "IN" else "IN",
-        "attendance": att, "on_leave": bool(on_leave),
-        "checkin_enabled": bool(s.enable_checkin), "require_geolocation": bool(s.require_geolocation),
-        "first_in": str(logs[0].time) if logs and logs[0].log_type == "IN" else None,
+        "date": str(d), "now": str(now), "status_label": _status_label(day, cur, st, on_leave),
+        "shift": shift, "window": shifts.format_window(cur or ref) if (cur or ref) else None,
+        "window_open": bool(cur), "next_shift": shifts.format_window(nxt) if nxt else None,
+        "shifts_today": [shifts.format_window(x) for x in day["windows"]],
+        "logs": [{"time": str(l.time), "log_type": l.log_type, "device": l.device_id} for l in logs],
+        "next_action": st.next_action, "last_log": {"time": str(st.last.time), "log_type": st.last.log_type} if st.last else None,
+        "first_in": str(first_in) if first_in else None,
+        "attendance": att, "on_leave": on_leave, "holiday": day["holiday"], "rest_day": day["rest_day"],
+        "checkin_enabled": p.enabled, "require_geolocation": p.gps_required,
+        "policy": {"enabled": p.enabled, "gps_required": p.gps_required, "enforce_geofence": p.enforce_geofence,
+                   "radius": p.radius, "max_accuracy": p.max_accuracy, "shift_window": p.shift_window,
+                   "allow_without_shift": p.allow_without_shift, "summary": checkin_policy.summary(p),
+                   "override": bool(p.override)},
+        "locations": locs, "geofence": locs[0] if locs else None,
+        "upcoming": [shifts.serialize_day(x) for x in upcoming_days[1:]],
     }
-
-
-def _haversine(lat1, lon1, lat2, lon2):
-    r = 6371000
-    p1, p2 = math.radians(lat1), math.radians(lat2)
-    dp, dl = math.radians(lat2 - lat1), math.radians(lon2 - lon1)
-    a = math.sin(dp / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2
-    return 2 * r * math.asin(math.sqrt(a))
-
-
-def _punch(log_type, latitude=None, longitude=None, accuracy=None, client_request_id=None):
-    emp = guard("enable_checkin")
-    s = identity.settings()
-
-    def do():
-        now = now_datetime()
-        shift = hrms.active_shift(emp.name, now.date())
-        if not shift and not s.allow_checkin_without_shift:
-            frappe.throw(_("You don't have an active shift today. Please contact your manager."))
-        logs = _checkins(emp.name, now.date())
-        if logs and logs[-1].log_type == log_type:
-            frappe.throw(_("You are already checked {0}.").format(_("in") if log_type == "IN" else _("out")))
-        if log_type == "OUT" and not logs:
-            frappe.throw(_("Please check in first."))
-        cooldown = cint(s.checkin_cooldown_minutes)
-        if logs and cooldown and get_datetime(logs[-1].time) > add_to_date(now, minutes=-cooldown):
-            frappe.throw(_("Please wait {0} minute(s) between punches.").format(cooldown))
-        lat, lng = (flt(latitude) if latitude not in (None, "") else None,
-                    flt(longitude) if longitude not in (None, "") else None)
-        if s.require_geolocation and (lat is None or lng is None):
-            frappe.throw(_("Location is required to check {0}. Please allow location access.").format(
-                _("in") if log_type == "IN" else _("out")))
-        loc = shift.get("location") if shift else None
-        if loc and loc.latitude and loc.longitude and loc.checkin_radius:
-            if lat is None:
-                frappe.throw(_("Location is required for your shift location."))
-            dist = _haversine(lat, lng, flt(loc.latitude), flt(loc.longitude))
-            if dist > flt(loc.checkin_radius) + min(flt(accuracy or 0), 100):
-                frappe.throw(_("You are {0} m away from {1}. Check-in is allowed within {2} m.").format(
-                    int(dist), loc.location_name, int(loc.checkin_radius)))
-        meta = frappe.get_meta("Employee Checkin")
-        doc = {"doctype": "Employee Checkin", "employee": emp.name, "time": now, "log_type": log_type,
-               "device_id": "thinkNXG ESS Portal"}
-        if lat is not None and meta.has_field("latitude"):
-            doc.update({"latitude": lat, "longitude": lng})
-        ci = frappe.get_doc(doc)
-        ci.flags.ignore_permissions = True
-        ci.insert()
-        return {"doctype": "Employee Checkin", "name": ci.name, "time": str(ci.time), "log_type": log_type}
-
-    return run_once(client_request_id, f"checkin_{log_type.lower()}", do)
 
 
 @frappe.whitelist(methods=["GET"])
@@ -93,14 +77,89 @@ def get_today():
     return _today_state(emp)
 
 
-@frappe.whitelist(methods=["POST"])
-def check_in(latitude=None, longitude=None, accuracy=None, client_request_id=None):
-    return _punch("IN", latitude, longitude, accuracy, client_request_id)
+@frappe.whitelist(methods=["GET", "POST"])
+def precheck(log_type="IN", latitude=None, longitude=None, accuracy=None):
+    """Dry run of the policy for the current position. Nothing is written."""
+    emp = guard("enable_attendance")
+    check_rate("checkin_precheck", 240)
+    res = checkin_policy.evaluate(emp, log_type, latitude, longitude, accuracy)
+    return checkin_policy.public_result(res)
+
+
+def _insert_checkin(emp, res, latitude, longitude, accuracy):
+    meta = frappe.get_meta("Employee Checkin")
+    loc = res.location or {}
+    doc = {"doctype": "Employee Checkin", "employee": emp.name, "time": res.now, "log_type": res.log_type,
+           "device_id": "thinkNXG ESS Portal"}
+    lat, lng = geo._num(latitude), geo._num(longitude)
+    if lat is not None and lng is not None and meta.has_field("latitude"):
+        doc.update({"latitude": lat, "longitude": lng})
+    extras = {"ess_source": "ESS Portal", "ess_accuracy": geo._num(accuracy),
+              "ess_location": (loc.get("matched") or {}).get("name"), "ess_distance": loc.get("distance")}
+    for k, v in extras.items():
+        if meta.has_field(k):
+            doc[k] = v
+    ci = frappe.get_doc(doc)
+    ci.flags.ignore_permissions = True
+    ci.insert()
+    return {"doctype": "Employee Checkin", "name": ci.name, "time": str(ci.time), "log_type": res.log_type}
+
+
+def _punch(log_type, latitude=None, longitude=None, accuracy=None, client_time=None, client_request_id=None):
+    emp = guard("enable_attendance")
+    check_rate("checkin", identity.settings().get("checkin_rate_limit_per_hour") or 30)
+    if client_request_id:
+        done = frappe.db.get_value("ESS Offline Action", {"client_request_id": str(client_request_id)[:140],
+                                                          "user": frappe.session.user, "status": "Processed"},
+                                   "reference_name")
+        if done:
+            t = frappe.db.get_value("Employee Checkin", done, "time")
+            return {"ok": True, "duplicate": True, "name": done, "time": str(t), "log_type": log_type}
+    res = checkin_policy.evaluate(emp, log_type, latitude, longitude, accuracy)
+    if not res.allowed:
+        log = checkin_policy.write_log(emp, res, latitude, longitude, accuracy, client_time)
+        return {**checkin_policy.public_result(res), "log": log}
+    frappe.db.savepoint("ess_punch")
+    try:
+        out = run_once(client_request_id, f"checkin_{log_type.lower()}",
+                       lambda: _insert_checkin(emp, res, latitude, longitude, accuracy))
+    except (frappe.ValidationError, frappe.DuplicateEntryError) as e:
+        # Frappe HR's own Employee Checkin validation (e.g. native geolocation tracking) still applies.
+        frappe.db.rollback(save_point="ess_punch")
+        frappe.local.message_log = []
+        res.update(allowed=False, code="NATIVE_VALIDATION", message=frappe.utils.strip_html(str(e))[:300],
+                   hint=_("This was rejected by Frappe HR's own check-in rules. Contact HR if it keeps happening."))
+        log = checkin_policy.write_log(emp, res, latitude, longitude, accuracy, client_time)
+        return {**checkin_policy.public_result(res), "log": log}
+    log = checkin_policy.write_log(emp, res, latitude, longitude, accuracy, client_time, checkin=out.get("name"))
+    if frappe.get_meta("Employee Checkin").has_field("ess_log") and out.get("name"):
+        frappe.db.set_value("Employee Checkin", out["name"], "ess_log", log, update_modified=False)
+    matched = ((res.location or {}).get("matched") or {}).get("name")
+    t = get_datetime(out["time"]).strftime("%H:%M")
+    msg = (_("Checked in at {0}") if log_type == "IN" else _("Checked out at {0}")).format(t)
+    if matched:
+        msg += f" · {matched}"
+    return {**checkin_policy.public_result(res), **out, "ok": True, "message": msg, "log": log}
 
 
 @frappe.whitelist(methods=["POST"])
-def check_out(latitude=None, longitude=None, accuracy=None, client_request_id=None):
-    return _punch("OUT", latitude, longitude, accuracy, client_request_id)
+def check_in(latitude=None, longitude=None, accuracy=None, client_time=None, client_request_id=None):
+    return _punch("IN", latitude, longitude, accuracy, client_time, client_request_id)
+
+
+@frappe.whitelist(methods=["POST"])
+def check_out(latitude=None, longitude=None, accuracy=None, client_time=None, client_request_id=None):
+    return _punch("OUT", latitude, longitude, accuracy, client_time, client_request_id)
+
+
+@frappe.whitelist(methods=["GET"])
+def my_checkin_log(limit=30, offset=0):
+    emp = guard("enable_attendance")
+    limit, offset = page(limit, offset)
+    return frappe.get_all("ESS Checkin Log", filters={"employee": emp.name}, limit=limit, start=offset,
+                          order_by="creation desc",
+                          fields=["name", "log_type", "decision", "reason_code", "message", "server_time",
+                                  "matched_location", "distance_m", "accuracy", "shift_type", "risk_level"])
 
 
 @frappe.whitelist(methods=["GET"])
@@ -117,18 +176,28 @@ def get_month(year=None, month=None):
                                                          "time": ["between", [f"{start} 00:00:00", f"{end} 23:59:59"]]},
                             fields=["time", "log_type"], order_by="time asc"):
         logs.setdefault(str(getdate(l.time)), []).append({"time": str(l.time)[11:16], "log_type": l.log_type})
-    hol = {str(h.holiday_date): h for h in hrms.holidays_between(emp.name, start, end)}
+    sched = {str(x["date"]): x for x in shifts.plan([emp.name], start, end)[emp.name]}
     days = []
     for i in range(date_diff(end, start) + 1):
         d = str(add_days(start, i))
         a = att.get(d)
-        status = a.status if a else ("Holiday" if d in hol and not hol[d].weekly_off else
-                                     "Weekly Off" if d in hol else ("Future" if d > today() else
-                                                                    ("Missing" if logs.get(d) else "Unmarked")))
+        sd = sched.get(d) or {}
+        hol = sd.get("holiday")
+        if a:
+            status = a.status
+        elif sd.get("rest_day"):
+            status = "Rest Day"
+        elif hol and not sd.get("windows"):
+            status = "Weekly Off" if hol["weekly_off"] else "Holiday"
+        elif d > today():
+            status = "Future"
+        else:
+            status = "Missing" if logs.get(d) else "Unmarked"
         days.append({"date": d, "status": status, "late": bool(a and a.late_entry),
                      "early_exit": bool(a and a.early_exit), "working_hours": a.working_hours if a else None,
                      "leave_type": a.leave_type if a else None, "logs": logs.get(d, []),
-                     "holiday": hol[d].description if d in hol else None,
+                     "holiday": hol["description"] if hol else None,
+                     "shifts": [shifts.format_window(x) for x in sd.get("windows", [])],
                      "incomplete": bool(logs.get(d)) and len(logs.get(d)) % 2 == 1 and d < today()})
     summary = {}
     for d in days:

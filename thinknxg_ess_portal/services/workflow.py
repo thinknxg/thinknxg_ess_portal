@@ -17,6 +17,7 @@ TYPES = {
     "Shift Request": {"key": "shift", "flag": "include_attendance", "approver": "approver"},
     "ESS Profile Change Request": {"key": "profile", "flag": None, "approver": None},
     "ESS Document Request": {"key": "document", "flag": None, "approver": None},
+    "ESS Roster Change Request": {"key": "roster", "flag": "include_attendance", "approver": "approver"},
 }
 
 
@@ -136,6 +137,26 @@ def pending(user=None, types=None):
                 out.append(_item("ESS Document Request", r, r.template, {"purpose": r.purpose},
                                  r.employee, r.employee_name, r.creation.date()))
 
+    if "roster" in types:
+        appr = approvers(user, "include_attendance")
+        flt = {"status": "Pending Approval"}
+        if not identity.is_hr_manager(user):
+            flt["approver"] = ["in", appr]
+        for r in frappe.get_all("ESS Roster Change Request", filters=flt,
+                                fields=["name", "employee", "employee_name", "request_type", "from_date", "to_date",
+                                        "requested_shift_type", "swap_with_name", "reason", "approver", "creation"],
+                                limit=200):
+            if r.employee == my_emp:
+                continue
+            title = (_("Swap with {0}").format(r.swap_with_name) if r.request_type == "Swap with colleague" else
+                     _("Change to {0}").format(r.requested_shift_type) if r.request_type == "Change shift" else
+                     _("Rest day request"))
+            out.append(_item("ESS Roster Change Request", r, title,
+                             {"from_date": str(r.from_date), "to_date": str(r.to_date), "reason": r.reason,
+                              "request_type": r.request_type, "requested_shift_type": r.requested_shift_type,
+                              "swap_with_name": r.swap_with_name}, r.employee, r.employee_name, r.creation.date(),
+                             r.approver if r.approver and r.approver != user else None))
+
     out.sort(key=lambda x: x["submitted_on"])
     return out
 
@@ -217,8 +238,11 @@ def act(doctype, name, action, comment=None, user=None):
     elif doctype == "ESS Document Request":
         from thinknxg_ess_portal.services import documents
         documents.review(doc, approved, comment)
+    elif doctype == "ESS Roster Change Request":
+        from thinknxg_ess_portal.services.roster import decide_change
+        decide_change(doc, approved, comment)
 
-    if comment and doctype not in ("ESS Document Request",):
+    if comment and doctype not in ("ESS Document Request", "ESS Roster Change Request"):
         try:
             doc.add_comment("Comment", _("{0} via ESS: {1}").format(_("Approved") if approved else _("Rejected"),
                                                                   frappe.utils.escape_html(comment)))

@@ -170,6 +170,35 @@ def own_user_has_permission(doc, ptype=None, user=None):
     return _full(user) or doc.get("user") == user
 
 
+# ---- check-in audit log: own rows; HR and admins see all
+def checkin_log_query(user=None):
+    return _employee_scoped_query("ESS Checkin Log", user or frappe.session.user, ("HR User",))
+
+
+def checkin_log_has_permission(doc, ptype=None, user=None):
+    return _employee_scoped(doc, ptype, user or frappe.session.user, ("HR User",))
+
+
+# ---- roster change requests: requester, swap partner, approver, HR
+def roster_change_query(user=None):
+    user = user or frappe.session.user
+    if _full(user) or "HR User" in _roles(user):
+        return ""
+    t = "`tabESS Roster Change Request`"
+    mine = _in(_employees(user))
+    return f"({t}.employee in {mine} or {t}.swap_with in {mine} or {t}.approver={_esc(user)})"
+
+
+def roster_change_has_permission(doc, ptype=None, user=None):
+    user = user or frappe.session.user
+    if _full(user) or "HR User" in _roles(user):
+        return True
+    mine = _employees(user)
+    if doc.employee in mine or doc.swap_with in mine or doc.approver == user:
+        return ptype in (None, "read", "print")
+    return False
+
+
 def delegation_query(user=None):
     user = user or frappe.session.user
     if _full(user):

@@ -1,0 +1,357 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-10-24 12:00:00.000000",
+ "modified": "2026-10-24 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "name": "ESS Checkin Log",
+ "module": "ESS Portal",
+ "custom": 0,
+ "engine": "InnoDB",
+ "editable_grid": 1,
+ "field_order": [
+  "employee",
+  "employee_name",
+  "user",
+  "log_type",
+  "decision",
+  "reason_code",
+  "message",
+  "column_break_69",
+  "server_time",
+  "client_time",
+  "source",
+  "checkin",
+  "policy_override",
+  "section_break_70",
+  "latitude",
+  "longitude",
+  "accuracy",
+  "column_break_71",
+  "matched_location",
+  "distance_m",
+  "nearest_location",
+  "nearest_distance_m",
+  "section_break_72",
+  "shift_type",
+  "window_open",
+  "column_break_73",
+  "window_close",
+  "section_break_74",
+  "risk_level",
+  "risk_flags",
+  "column_break_75",
+  "ip_address",
+  "user_agent",
+  "section_break_76",
+  "policy_trace"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "search_index": 1,
+   "idx": 1
+  },
+  {
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "read_only": 1,
+   "idx": 2
+  },
+  {
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "User",
+   "options": "User",
+   "idx": 3
+  },
+  {
+   "fieldname": "log_type",
+   "fieldtype": "Select",
+   "label": "Log Type",
+   "options": "IN\nOUT",
+   "in_list_view": 1,
+   "idx": 4
+  },
+  {
+   "fieldname": "decision",
+   "fieldtype": "Select",
+   "label": "Decision",
+   "options": "Allowed\nDenied",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "idx": 5
+  },
+  {
+   "fieldname": "reason_code",
+   "fieldtype": "Data",
+   "label": "Reason Code",
+   "in_standard_filter": 1,
+   "idx": 6
+  },
+  {
+   "fieldname": "message",
+   "fieldtype": "Small Text",
+   "label": "Message",
+   "idx": 7
+  },
+  {
+   "fieldname": "column_break_69",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 8
+  },
+  {
+   "fieldname": "server_time",
+   "fieldtype": "Datetime",
+   "label": "Server Time",
+   "in_list_view": 1,
+   "idx": 9
+  },
+  {
+   "fieldname": "client_time",
+   "fieldtype": "Datetime",
+   "label": "Client Time",
+   "idx": 10
+  },
+  {
+   "fieldname": "source",
+   "fieldtype": "Data",
+   "label": "Source",
+   "idx": 11
+  },
+  {
+   "fieldname": "checkin",
+   "fieldtype": "Link",
+   "label": "Checkin",
+   "options": "Employee Checkin",
+   "idx": 12
+  },
+  {
+   "fieldname": "policy_override",
+   "fieldtype": "Link",
+   "label": "Policy Override",
+   "options": "ESS Checkin Policy",
+   "idx": 13
+  },
+  {
+   "fieldname": "section_break_70",
+   "fieldtype": "Section Break",
+   "label": "Location",
+   "idx": 14
+  },
+  {
+   "fieldname": "latitude",
+   "fieldtype": "Float",
+   "label": "Latitude",
+   "precision": "7",
+   "idx": 15
+  },
+  {
+   "fieldname": "longitude",
+   "fieldtype": "Float",
+   "label": "Longitude",
+   "precision": "7",
+   "idx": 16
+  },
+  {
+   "fieldname": "accuracy",
+   "fieldtype": "Float",
+   "label": "Accuracy (m)",
+   "idx": 17
+  },
+  {
+   "fieldname": "column_break_71",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 18
+  },
+  {
+   "fieldname": "matched_location",
+   "fieldtype": "Data",
+   "label": "Matched Location",
+   "idx": 19
+  },
+  {
+   "fieldname": "distance_m",
+   "fieldtype": "Float",
+   "label": "Distance (m)",
+   "idx": 20
+  },
+  {
+   "fieldname": "nearest_location",
+   "fieldtype": "Data",
+   "label": "Nearest Location",
+   "idx": 21
+  },
+  {
+   "fieldname": "nearest_distance_m",
+   "fieldtype": "Float",
+   "label": "Nearest distance (m)",
+   "idx": 22
+  },
+  {
+   "fieldname": "section_break_72",
+   "fieldtype": "Section Break",
+   "label": "Shift",
+   "idx": 23
+  },
+  {
+   "fieldname": "shift_type",
+   "fieldtype": "Link",
+   "label": "Shift Type",
+   "options": "Shift Type",
+   "idx": 24
+  },
+  {
+   "fieldname": "window_open",
+   "fieldtype": "Datetime",
+   "label": "Window Open",
+   "idx": 25
+  },
+  {
+   "fieldname": "column_break_73",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 26
+  },
+  {
+   "fieldname": "window_close",
+   "fieldtype": "Datetime",
+   "label": "Window Close",
+   "idx": 27
+  },
+  {
+   "fieldname": "section_break_74",
+   "fieldtype": "Section Break",
+   "label": "Risk",
+   "idx": 28
+  },
+  {
+   "fieldname": "risk_level",
+   "fieldtype": "Select",
+   "label": "Risk Level",
+   "options": "None\nLow\nHigh",
+   "default": "None",
+   "in_standard_filter": 1,
+   "idx": 29
+  },
+  {
+   "fieldname": "risk_flags",
+   "fieldtype": "Small Text",
+   "label": "Risk Flags",
+   "idx": 30
+  },
+  {
+   "fieldname": "column_break_75",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 31
+  },
+  {
+   "fieldname": "ip_address",
+   "fieldtype": "Data",
+   "label": "Ip Address",
+   "idx": 32
+  },
+  {
+   "fieldname": "user_agent",
+   "fieldtype": "Small Text",
+   "label": "User Agent",
+   "idx": 33
+  },
+  {
+   "fieldname": "section_break_76",
+   "fieldtype": "Section Break",
+   "label": "Policy decision",
+   "collapsible": 1,
+   "idx": 34
+  },
+  {
+   "fieldname": "policy_trace",
+   "fieldtype": "Long Text",
+   "label": "Policy Trace",
+   "idx": 35
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 0
+  },
+  {
+   "role": "ESS Portal Admin",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 0
+  },
+  {
+   "role": "HR Manager",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 0
+  },
+  {
+   "role": "HR User",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "print": 1,
+   "email": 1,
+   "share": 0
+  },
+  {
+   "role": "Employee",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "print": 1,
+   "email": 1,
+   "share": 0
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "index_web_pages_for_search": 0,
+ "row_format": "Dynamic",
+ "autoname": "hash",
+ "naming_rule": "Random",
+ "description": "Append-only audit of every ESS check-in attempt, allowed or denied.",
+ "in_create": 1
+}

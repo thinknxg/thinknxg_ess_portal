@@ -1,0 +1,248 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-10-24 12:00:00.000000",
+ "modified": "2026-10-24 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "name": "ESS Roster",
+ "module": "ESS Portal",
+ "custom": 0,
+ "engine": "InnoDB",
+ "editable_grid": 1,
+ "field_order": [
+  "naming_series",
+  "title",
+  "company",
+  "department",
+  "branch",
+  "column_break_77",
+  "from_date",
+  "to_date",
+  "status",
+  "has_unpublished_changes",
+  "version",
+  "section_break_78",
+  "planner",
+  "published_on",
+  "published_by",
+  "column_break_79",
+  "notes",
+  "published_digest",
+  "section_break_80",
+  "requirements"
+ ],
+ "fields": [
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "label": "Series",
+   "options": "ESS-RST-.YYYY.-.####",
+   "default": "ESS-RST-.YYYY.-.####",
+   "hidden": 1,
+   "reqd": 1,
+   "idx": 1
+  },
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "label": "Title",
+   "reqd": 1,
+   "in_list_view": 1,
+   "idx": 2
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1,
+   "idx": 3
+  },
+  {
+   "fieldname": "department",
+   "fieldtype": "Link",
+   "label": "Department",
+   "options": "Department",
+   "idx": 4
+  },
+  {
+   "fieldname": "branch",
+   "fieldtype": "Link",
+   "label": "Branch",
+   "options": "Branch",
+   "idx": 5
+  },
+  {
+   "fieldname": "column_break_77",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 6
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date",
+   "reqd": 1,
+   "in_list_view": 1,
+   "idx": 7
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date",
+   "reqd": 1,
+   "in_list_view": 1,
+   "idx": 8
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nPublished\nArchived",
+   "default": "Draft",
+   "read_only": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "idx": 9
+  },
+  {
+   "fieldname": "has_unpublished_changes",
+   "fieldtype": "Check",
+   "label": "Has Unpublished Changes",
+   "read_only": 1,
+   "idx": 10
+  },
+  {
+   "fieldname": "version",
+   "fieldtype": "Int",
+   "label": "Version",
+   "read_only": 1,
+   "idx": 11
+  },
+  {
+   "fieldname": "section_break_78",
+   "fieldtype": "Section Break",
+   "label": "Publishing",
+   "idx": 12
+  },
+  {
+   "fieldname": "planner",
+   "fieldtype": "Link",
+   "label": "Planner",
+   "options": "User",
+   "read_only": 1,
+   "idx": 13
+  },
+  {
+   "fieldname": "published_on",
+   "fieldtype": "Datetime",
+   "label": "Published On",
+   "read_only": 1,
+   "idx": 14
+  },
+  {
+   "fieldname": "published_by",
+   "fieldtype": "Link",
+   "label": "Published By",
+   "options": "User",
+   "read_only": 1,
+   "idx": 15
+  },
+  {
+   "fieldname": "column_break_79",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 16
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes",
+   "idx": 17
+  },
+  {
+   "fieldname": "published_digest",
+   "fieldtype": "Long Text",
+   "label": "Published Digest",
+   "hidden": 1,
+   "read_only": 1,
+   "idx": 18
+  },
+  {
+   "fieldname": "section_break_80",
+   "fieldtype": "Section Break",
+   "label": "Coverage requirements",
+   "idx": 19
+  },
+  {
+   "fieldname": "requirements",
+   "fieldtype": "Table",
+   "label": "Requirements",
+   "options": "ESS Roster Requirement",
+   "idx": 20
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "ESS Portal Admin",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "HR Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "HR User",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "index_web_pages_for_search": 0,
+ "row_format": "Dynamic",
+ "autoname": "naming_series:",
+ "naming_rule": "By \"Naming Series\" field",
+ "title_field": "title",
+ "track_changes": 1,
+ "description": "Planned shifts. Publishing writes native Shift Assignments (tagged with this roster) for today onward."
+}

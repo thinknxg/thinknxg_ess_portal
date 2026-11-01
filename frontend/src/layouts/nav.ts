@@ -8,7 +8,9 @@ export const NAV: NavGroup[] = [
   ] },
   { label: "My work", items: [
     { label: "Attendance", to: "/attendance", icon: "clock", module: "attendance" },
+    { label: "My roster", to: "/roster", icon: "calendar", module: "roster" },
     { label: "Leave", to: "/leave", icon: "sun", module: "leave" },
+    { label: "Holidays", to: "/holidays", icon: "calendar" },
   ] },
   { label: "My finances", items: [
     { label: "Payslips", to: "/finances/payslips", icon: "wallet", module: "payroll" },
@@ -25,15 +27,18 @@ export const NAV: NavGroup[] = [
     { label: "HR helpdesk", to: "/support", icon: "lifebuoy", module: "helpdesk" },
     { label: "HR assistant", to: "/assistant", icon: "spark", module: "assistant" },
   ] },
-  { label: "Team", cap: "manager|hr", items: [
+  { label: "Team", cap: "manager|hr|planner", items: [
     { label: "Team overview", to: "/team", icon: "users", cap: "manager|hr" },
     { label: "Approvals", to: "/team/approvals", icon: "check", cap: "manager|hr", badge: "approvals" },
+    { label: "Roster planner", to: "/team/roster", icon: "calendar", cap: "planner", module: "roster" },
     { label: "Team analytics", to: "/team/analytics", icon: "chart", cap: "manager", module: "analytics" },
   ] },
   { label: "HR operations", cap: "hr|agent|admin", items: [
     { label: "Service desk", to: "/hr/tickets", icon: "lifebuoy", cap: "agent", module: "helpdesk" },
     { label: "Employees", to: "/hr/employees", icon: "users", cap: "hr" },
     { label: "Document admin", to: "/hr/documents", icon: "file", cap: "hr", module: "documents" },
+    { label: "Check-in control", to: "/hr/checkin", icon: "pin", cap: "hr" },
+    { label: "Check-in audit", to: "/hr/checkin-log", icon: "shield", cap: "hr" },
     { label: "Announcements", to: "/hr/announcements", icon: "megaphone", cap: "hr" },
     { label: "HR analytics", to: "/hr/analytics", icon: "chart", cap: "hr", module: "analytics" },
     { label: "Portal settings", to: "/hr/settings", icon: "gear", cap: "admin" },
