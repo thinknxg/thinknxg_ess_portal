@@ -13,7 +13,7 @@ export interface Capabilities {
 }
 
 export interface Boot {
-  user: { name: string; full_name: string; image?: string | null; email: string };
+  user: { name: string; full_name: string; image?: string | null; email: string; desk_access?: boolean };
   employee: null | {
     name: string; employee_name: string; first_name?: string; designation?: string; department?: string;
     company?: string; branch?: string; image?: string | null; date_of_joining?: string;

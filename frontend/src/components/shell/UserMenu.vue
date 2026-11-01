@@ -33,7 +33,7 @@ async function logout() {
       </div>
       <RouterLink role="menuitem" to="/profile" class="mi" @click="open = false"><EssIcon name="user" :size="18" />{{ t("My profile") }}</RouterLink>
       <RouterLink role="menuitem" to="/settings" class="mi" @click="open = false"><EssIcon name="gear" :size="18" />{{ t("Settings") }}</RouterLink>
-      <a role="menuitem" href="/app" class="mi" v-if="s.can('hr|admin')"><EssIcon name="chart" :size="18" />Desk</a>
+      <a role="menuitem" href="/app" class="mi" v-if="s.user.desk_access"><EssIcon name="desk" :size="18" />{{ t("Switch to Desk") }}</a>
       <button role="menuitem" class="mi" @click="logout"><EssIcon name="logout" :size="18" />{{ t("Sign out") }}</button>
     </div>
   </div>

@@ -30,7 +30,8 @@ const all = computed(() => {
   const navItems = NAV.filter((g) => s.can(g.cap)).flatMap((g) => g.items)
     .filter((i) => s.can(i.cap) && (!i.module || s.module(i.module)));
   const acts = ACTIONS.filter((a) => s.module(a.module) && s.employee);
-  return [...acts.map((a) => ({ ...a, kind: "Action" })), ...navItems.map((n) => ({ ...n, kind: "Page" }))];
+  const desk = s.user.desk_access ? [{ label: "Switch to Desk", to: "/app", icon: "desk", kind: "Page", external: true }] : [];
+  return [...acts.map((a) => ({ ...a, kind: "Action" })), ...navItems.map((n) => ({ ...n, kind: "Page" })), ...desk];
 });
 const results = computed(() => {
   const term = q.value.trim().toLowerCase();
@@ -44,7 +45,8 @@ function go(i = idx.value) {
   const r = results.value[i];
   if (!r) return;
   ui.paletteOpen = false;
-  router.push(r.to);
+  if ((r as any).external) window.location.assign(r.to);
+  else router.push(r.to);
 }
 function key(e: KeyboardEvent) {
   if (e.key === "ArrowDown") { e.preventDefault(); idx.value = Math.min(idx.value + 1, results.value.length - 1); }
