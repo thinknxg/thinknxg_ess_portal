@@ -158,7 +158,7 @@
    "fieldtype": "Data",
    "label": "Weekend Days",
    "default": "Friday,Saturday",
-   "description": "Comma separated. Used only for display hints; leave balances come from HRMS holiday lists.",
+   "description": "Comma separated. Used only for display hints; leave balances come from thinkNXG HR holiday lists.",
    "idx": 8
   },
   {

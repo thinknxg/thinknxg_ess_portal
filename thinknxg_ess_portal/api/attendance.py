@@ -124,11 +124,11 @@ def _punch(log_type, latitude=None, longitude=None, accuracy=None, client_time=N
         out = run_once(client_request_id, f"checkin_{log_type.lower()}",
                        lambda: _insert_checkin(emp, res, latitude, longitude, accuracy))
     except (frappe.ValidationError, frappe.DuplicateEntryError) as e:
-        # Frappe HR's own Employee Checkin validation (e.g. native geolocation tracking) still applies.
+        # thinkNXG HR's own Employee Checkin validation (e.g. native geolocation tracking) still applies.
         frappe.db.rollback(save_point="ess_punch")
         frappe.local.message_log = []
         res.update(allowed=False, code="NATIVE_VALIDATION", message=frappe.utils.strip_html(str(e))[:300],
-                   hint=_("This was rejected by Frappe HR's own check-in rules. Contact HR if it keeps happening."))
+                   hint=_("This was rejected by thinkNXG HR's own check-in rules. Contact HR if it keeps happening."))
         log = checkin_policy.write_log(emp, res, latitude, longitude, accuracy, client_time)
         return {**checkin_policy.public_result(res), "log": log}
     log = checkin_policy.write_log(emp, res, latitude, longitude, accuracy, client_time, checkin=out.get("name"))

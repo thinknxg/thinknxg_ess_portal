@@ -168,7 +168,7 @@ const addOpen = ref(false); const team = ref<any[]>([]); const toAdd = ref<strin
 async function openAdd() { const all = await Roster.teamMembers(); const have = new Set(emps.value.map((e) => e.name)); team.value = all.filter((x: any) => !have.has(x.name)); toAdd.value = []; addOpen.value = true; }
 async function doAdd() { busy.value = true; try { await Roster.addEmployees(name, toAdd.value); addOpen.value = false; await load(); } catch (e: any) { ui.toast(e.message, "error"); } finally { busy.value = false; } }
 async function removeRow(e: any) { if (!confirm(`Remove ${e.employee_name} from this roster?`)) return; await Roster.removeEmployee(name, e.name); await load(); }
-async function archive() { if (!confirm("Archive this roster? Published shift assignments stay in Frappe HR.")) return; await Roster.archive(name); await load(); }
+async function archive() { if (!confirm("Archive this roster? Published shift assignments stay in thinkNXG HR.")) return; await Roster.archive(name); await load(); }
 const WEEKDAYS = ["All days", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 function goTo(emp?: string, d?: string) { if (!emp || !d) return; const r = emps.value.findIndex((x) => x.name === emp); const c = dates.value.indexOf(d); if (r >= 0 && c >= 0) focusCell(r, c); }
 </script>
@@ -262,7 +262,7 @@ function goTo(emp?: string, d?: string) { if (!emp || !d) return; const r = emps
 
       <AccessibleDialog :open="pubOpen" :title="g.roster.status === 'Published' ? 'Republish roster' : 'Publish roster'" wide @close="pubOpen = false">
         <div class="stack" v-if="!report">
-          <p>Publishing writes Frappe HR Shift Assignments for <strong>{{ fmtDate(g.today > g.roster.from_date ? g.today : g.roster.from_date) }}</strong> to <strong>{{ fmtDate(g.roster.to_date) }}</strong>. Past days are never changed. Rest days get no assignment.</p>
+          <p>Publishing writes thinkNXG HR Shift Assignments for <strong>{{ fmtDate(g.today > g.roster.from_date ? g.today : g.roster.from_date) }}</strong> to <strong>{{ fmtDate(g.roster.to_date) }}</strong>. Past days are never changed. Rest days get no assignment.</p>
           <p class="small muted">{{ g.validation.summary.warnings }} warning(s) and {{ g.validation.summary.gaps }} coverage gap(s) won't stop publishing.</p>
           <div v-if="blockers.length" class="block">
             <p><strong>{{ blockers.length }} manual shift assignment(s) overlap this roster.</strong> Those people are skipped unless HR trims the manual assignments.</p>

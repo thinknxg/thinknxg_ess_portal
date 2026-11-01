@@ -133,7 +133,7 @@ async function test(e: any) { tHits.value = []; tQ.value = e.employee_name; tRes
             <p class="small">These rules only govern punches from the ESS portal. Biometric devices posting to the Employee Checkin API, and HR staff working in Desk, keep their own access.</p>
           </section>
           <section class="panel tight note warn" v-if="ov.native_geolocation_tracking">
-            <h3>Frappe HR geolocation tracking is on</h3>
+            <h3>thinkNXG HR geolocation tracking is on</h3>
             <p class="small">HR Settings also checks each check-in against the Shift Location radius. An ESS exemption or extra ESS location can't override that rule; turn it off in HR Settings if ESS should decide.</p>
           </section>
           <section class="panel tight note">
@@ -157,7 +157,7 @@ async function test(e: any) { tHits.value = []; tQ.value = e.employee_name; tRes
             <td><StatusBadge v-if="!l.is_active" tone="muted" label="Inactive" /><button v-if="editable" class="btn ghost sm" @click="editLoc(l)">Edit</button></td></tr></tbody></table>
       </div>
       <EmptyState v-else title="No ESS locations yet" text="Add your offices and sites. Shift Locations on assignments are also used when that option is on." icon="pin" />
-      <p class="small muted" v-if="locs?.shift_locations?.length">{{ locs.shift_locations.length }} Frappe HR Shift Location(s) exist and can be used through Shift Assignments.</p>
+      <p class="small muted" v-if="locs?.shift_locations?.length">{{ locs.shift_locations.length }} thinkNXG HR Shift Location(s) exist and can be used through Shift Assignments.</p>
     </section>
 
     <section v-else-if="tab === 'overrides'" class="panel">

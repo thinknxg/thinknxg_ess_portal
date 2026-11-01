@@ -1,4 +1,4 @@
-"""Native HRMS document events -> portal notifications. Read-only reactions; no HR data is modified."""
+"""Native thinkNXG HR document events -> portal notifications. Read-only reactions; no HR data is modified."""
 import frappe
 from frappe import _
 from thinknxg_ess_portal.services.notifications import notify

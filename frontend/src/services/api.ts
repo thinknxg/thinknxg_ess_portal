@@ -1,5 +1,5 @@
 /**
- * Central Frappe request wrapper. Same-origin session auth + CSRF token; no API keys in the browser.
+ * Central thinkNXG request wrapper. Same-origin session auth + CSRF token; no API keys in the browser.
  */
 export class ApiError extends Error {
   status: number;
@@ -89,7 +89,7 @@ export function requestId(): string {
   return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
 }
 
-/** Upload a private file via Frappe's upload_file; returns the file_url to attach server-side. */
+/** Upload a private file via thinkNXG's upload_file; returns the file_url to attach server-side. */
 export async function uploadPrivate(file: File): Promise<string> {
   if (file.size > 10 * 1024 * 1024) throw new ApiError("Files must be 10 MB or smaller.");
   const fd = new FormData();
