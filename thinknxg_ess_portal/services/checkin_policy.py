@@ -264,7 +264,7 @@ def evaluate(emp, log_type, latitude=None, longitude=None, accuracy=None, now=No
             return deny("NO_SHIFT", _("Check-in isn't available because {0}.").format(reason),
                         _("If you're working, ask your manager to add you to the roster, or request an attendance correction."))
     elif p.shift_window and not cur:
-        res.warnings.append(_("This check-out is after your shift window closed, so Frappe HR may not link it to the shift."))
+        res.warnings.append(_("This check-out is after your shift window closed, so thinkNXG HR may not link it to the shift."))
 
     if today["leave"] and today["leave"]["status"] == "Approved" and not today["leave"]["half_day"]:
         res.warnings.append(_("You're on approved {0} today.").format(today["leave"]["leave_type"]))

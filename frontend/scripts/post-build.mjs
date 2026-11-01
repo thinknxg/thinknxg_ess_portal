@@ -1,4 +1,4 @@
-// Turns the Vite index.html into the Frappe www/ess.html Jinja page and stamps the service worker version.
+// Turns the Vite index.html into the thinkNXG www/ess.html Jinja page and stamps the service worker version.
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { resolve, dirname } from "node:path";

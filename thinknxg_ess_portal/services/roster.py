@@ -293,7 +293,7 @@ def validate(doc, entries=None):
     for d in defaults:
         if d.name in rest_emps:
             conflicts.append({"employee": d.name, "kind": "default_shift", "severity": "warning",
-                              "message": _("{0} has a default shift ({1}). On rest days with no Shift Assignment, Frappe HR "
+                              "message": _("{0} has a default shift ({1}). On rest days with no Shift Assignment, thinkNXG HR "
                                            "falls back to it and may mark absence. Clear the default shift for rostered staff.").format(
                                   d.employee_name, d.default_shift)})
     if emps and getdate(doc.to_date) >= start:

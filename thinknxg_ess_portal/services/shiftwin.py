@@ -3,7 +3,7 @@ from datetime import date, datetime, time, timedelta
 
 
 def to_time(v):
-    """Frappe returns Time fields as timedelta from SQL and as 'HH:MM:SS' strings from documents."""
+    """thinkNXG returns Time fields as timedelta from SQL and as 'HH:MM:SS' strings from documents."""
     if v is None or v == "":
         return None
     if isinstance(v, time):

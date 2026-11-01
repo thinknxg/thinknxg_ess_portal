@@ -1,7 +1,7 @@
 app_name = "thinknxg_ess_portal"
 app_title = "thinkNXG ESS Portal"
 app_publisher = "Kreatao"
-app_description = "Enterprise Employee Self-Service portal for thinkNXG HR (Frappe HR v16)"
+app_description = "Enterprise Employee Self-Service portal for thinkNXG HR v16"
 app_email = "hello@kreatao.com"
 app_license = "MIT"
 required_apps = ["frappe", "erpnext", "hrms"]
@@ -46,7 +46,7 @@ _SCOPED = {
 permission_query_conditions = {dt: f"{_P}.{fn}_query" for dt, fn in _SCOPED.items()}
 has_permission = {dt: f"{_P}.{fn}_has_permission" for dt, fn in _SCOPED.items()}
 
-# ---------------------------------------------------------------- native HRMS events -> portal notifications
+# ---------------------------------------------------------------- native thinkNXG HR events -> portal notifications
 doc_events = {
     "Leave Application": {
         "on_update": "thinknxg_ess_portal.services.events.on_leave_update",
