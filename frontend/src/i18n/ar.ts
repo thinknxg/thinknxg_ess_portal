@@ -43,7 +43,7 @@ const ar: Record<string, string> = {
   "You don't have access to this page.": "ليس لديك صلاحية للوصول إلى هذه الصفحة.",
   "Page not found": "الصفحة غير موجودة", "Go home": "العودة للرئيسية",
   "Helpful": "مفيد", "Not helpful": "غير مفيد", "Waiting to send": "بانتظار الإرسال",
-  "Celebrations this week": "مناسبات هذا الأسبوع", "Birthday": "عيد ميلاد", "Work anniversary": "ذكرى العمل",
+  "Switch to Desk": "الانتقال إلى مكتب العمل", "Celebrations this week": "مناسبات هذا الأسبوع", "Birthday": "عيد ميلاد", "Work anniversary": "ذكرى العمل",
   "My roster": "جدول مناوباتي", "Holidays": "العطلات", "Roster planner": "تخطيط المناوبات", "Check-in control": "التحكم في تسجيل الحضور",
   "Check-in audit": "سجل تسجيل الحضور", "Upcoming roster": "المناوبات القادمة", "Today's shift": "مناوبة اليوم",
   "Location verification": "التحقق من الموقع", "Rest day": "يوم راحة", "On Duty": "في الدوام", "Off Duty": "خارج الدوام",

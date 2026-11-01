@@ -52,6 +52,10 @@ watch(() => route.fullPath, () => (ui.navOpen = false));
         </RouterLink>
       </section>
     </nav>
+    <a v-if="s.user.desk_access" href="/app" class="item desk" :title="t('Switch to Desk')">
+      <EssIcon name="desk" :size="18" />
+      <span class="grow">{{ t("Switch to Desk") }}</span>
+    </a>
   </aside>
 </template>
 
@@ -69,6 +73,7 @@ watch(() => route.fullPath, () => (ui.navOpen = false));
 .item:hover { background: var(--surface-2); color: var(--ink); }
 .item.active { background: var(--brand-soft); color: var(--ink); font-weight: 500; }
 .item.active::before { content: ""; position: absolute; inset-inline-start: -12px; top: 8px; bottom: 8px; width: 3px; border-radius: 3px; background: var(--brand); }
+.desk { margin-top: auto; border-top: 1px solid var(--line); border-radius: 0 0 8px 8px; padding-top: 6px; min-height: 46px; }
 .count { min-width: 22px; height: 20px; padding: 0 6px; border-radius: 10px; background: var(--saffron); color: #2B1D02; font-size: var(--fs-xs); font-weight: 600; display: grid; place-items: center; }
 @media (max-width: 960px) {
   .rail { position: fixed; inset-block: 0; inset-inline-start: 0; width: min(86vw, 300px); z-index: 40; transform: translateX(-105%); transition: transform .2s ease; box-shadow: var(--shadow-pop); }
