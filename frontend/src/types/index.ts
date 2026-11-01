@@ -8,6 +8,7 @@ export interface Capabilities {
   agent: boolean;
   payroll_officer: boolean;
   admin: boolean;
+  planner?: boolean;
   modules: Record<string, boolean>;
 }
 

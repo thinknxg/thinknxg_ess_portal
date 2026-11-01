@@ -14,6 +14,7 @@ class ESSPortalSettings(Document):
 
     def on_update(self):
         frappe.cache.delete_value("ess_portal_settings")
+        frappe.cache.delete_keys("ess_shift_type:")
         from thinknxg_ess_portal.services.audit import log_event
         log_event("Settings Change", reference_doctype=self.doctype, reference_name=self.name,
                   details="Portal settings updated")

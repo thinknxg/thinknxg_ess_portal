@@ -66,6 +66,31 @@ def _custom_fields():
             "options": "User", "insert_after": "department_name",
             "description": "Gets manager-level visibility of this department (and sub-departments) in the ESS portal",
         }],
+        # Roster publishing tags the Shift Assignments it owns, so republishing never touches manual ones.
+        "Shift Assignment": [
+            {"fieldname": "ess_roster", "label": "ESS Roster", "fieldtype": "Link", "options": "ESS Roster",
+             "insert_after": "shift_type", "read_only": 1, "in_standard_filter": 1, "search_index": 1,
+             "description": "Set when this assignment was created by publishing an ESS roster."},
+        ],
+        "Shift Type": [
+            {"fieldname": "ess_code", "label": "ESS Short Code", "fieldtype": "Data", "length": 3,
+             "insert_after": "end_time", "description": "1-3 characters shown on roster grids, e.g. G, E, N."},
+            {"fieldname": "ess_color", "label": "ESS Roster Colour", "fieldtype": "Color", "insert_after": "ess_code"},
+        ],
+        # Audit context for portal punches. Device and Desk check-ins leave these empty.
+        "Employee Checkin": [
+            {"fieldname": "ess_section", "label": "ESS Portal", "fieldtype": "Section Break", "insert_after": "device_id",
+             "collapsible": 1},
+            {"fieldname": "ess_source", "label": "ESS Source", "fieldtype": "Data", "insert_after": "ess_section", "read_only": 1},
+            {"fieldname": "ess_accuracy", "label": "GPS Accuracy (m)", "fieldtype": "Float", "insert_after": "ess_source",
+             "read_only": 1},
+            {"fieldname": "ess_location", "label": "Matched Location", "fieldtype": "Data", "insert_after": "ess_accuracy",
+             "read_only": 1},
+            {"fieldname": "ess_distance", "label": "Distance (m)", "fieldtype": "Float", "insert_after": "ess_location",
+             "read_only": 1},
+            {"fieldname": "ess_log", "label": "ESS Check-in Log", "fieldtype": "Link", "options": "ESS Checkin Log",
+             "insert_after": "ess_distance", "read_only": 1},
+        ],
         # Attendance Request has no native rejection state; the portal records it here.
         "Attendance Request": [
             {"fieldname": "ess_status", "label": "ESS Review Status", "fieldtype": "Select",
@@ -77,7 +102,18 @@ def _custom_fields():
     }, ignore_validate=True, update=True)
 
 
+def _settings_defaults():
+    """Fill defaults for settings fields added after install (Singles don't backfill defaults)."""
+    meta = frappe.get_meta("ESS Portal Settings")
+    present = set(frappe.db.sql_list("select field from `tabSingles` where doctype='ESS Portal Settings'"))
+    for df in meta.fields:
+        if df.default not in (None, "") and df.fieldname not in present and df.fieldtype not in ("Section Break", "Column Break"):
+            frappe.db.set_single_value("ESS Portal Settings", df.fieldname, df.default)
+    frappe.cache.delete_value("ess_portal_settings")
+
+
 def _settings():
+    _settings_defaults()
     s = frappe.get_single("ESS Portal Settings")
     if not s.portal_title:
         s.portal_title = "thinkNXG ESS Portal"

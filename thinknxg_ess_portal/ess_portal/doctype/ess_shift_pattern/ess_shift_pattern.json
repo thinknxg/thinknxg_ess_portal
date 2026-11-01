@@ -1,0 +1,124 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-10-24 12:00:00.000000",
+ "modified": "2026-10-24 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "name": "ESS Shift Pattern",
+ "module": "ESS Portal",
+ "custom": 0,
+ "engine": "InnoDB",
+ "editable_grid": 1,
+ "field_order": [
+  "pattern_name",
+  "is_active",
+  "description",
+  "steps"
+ ],
+ "fields": [
+  {
+   "fieldname": "pattern_name",
+   "fieldtype": "Data",
+   "label": "Pattern Name",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1,
+   "idx": 1
+  },
+  {
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active",
+   "default": "1",
+   "in_list_view": 1,
+   "idx": 2
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description",
+   "idx": 3
+  },
+  {
+   "fieldname": "steps",
+   "fieldtype": "Table",
+   "label": "Steps",
+   "options": "ESS Shift Pattern Step",
+   "reqd": 1,
+   "description": "One row per day; the sequence repeats. Example 4-on/4-off: Day, Day, Night, Night, Rest, Rest, Rest, Rest.",
+   "idx": 4
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "ESS Portal Admin",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "HR Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "HR User",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "Employee",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "print": 1,
+   "email": 1,
+   "share": 0
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "index_web_pages_for_search": 0,
+ "row_format": "Dynamic",
+ "autoname": "field:pattern_name",
+ "naming_rule": "By fieldname"
+}

@@ -1,0 +1,36 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-10-24 12:00:00.000000",
+ "modified": "2026-10-24 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "name": "ESS Checkin Policy Location",
+ "module": "ESS Portal",
+ "custom": 0,
+ "engine": "InnoDB",
+ "editable_grid": 1,
+ "field_order": [
+  "location"
+ ],
+ "fields": [
+  {
+   "fieldname": "location",
+   "fieldtype": "Link",
+   "label": "Location",
+   "options": "ESS Checkin Location",
+   "reqd": 1,
+   "in_list_view": 1,
+   "idx": 1
+  }
+ ],
+ "permissions": [],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "index_web_pages_for_search": 0,
+ "row_format": "Dynamic",
+ "istable": 1
+}

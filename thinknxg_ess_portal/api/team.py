@@ -56,7 +56,15 @@ def get_exceptions(days=7):
         join `tabEmployee` e on e.name=c.employee where c.employee in %(team)s and c.time>=%(since)s and date(c.time)<%(today)s
         group by c.employee, date(c.time) having mod(count(*),2)=1""",
                         {"team": team or [""], "since": since, "today": today()}, as_dict=True)
-    return {"late": late, "absent": absent, "missing_punch": odd}
+    denied = frappe.get_all("ESS Checkin Log", filters={"employee": ["in", team or [""]], "decision": "Denied",
+                                                        "server_time": [">=", since]},
+                            fields=["employee_name", "reason_code", "message", "server_time", "nearest_location",
+                                    "nearest_distance_m"], order_by="server_time desc", limit=30)
+    risk = frappe.get_all("ESS Checkin Log", filters={"employee": ["in", team or [""]], "risk_level": ["in", ["Low", "High"]],
+                                                      "server_time": [">=", since]},
+                          fields=["employee_name", "risk_level", "risk_flags", "server_time", "decision"],
+                          order_by="server_time desc", limit=30)
+    return {"late": late, "absent": absent, "missing_punch": odd, "denied": denied, "risk": risk}
 
 
 @frappe.whitelist(methods=["GET"])

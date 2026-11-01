@@ -1,0 +1,155 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-10-24 12:00:00.000000",
+ "modified": "2026-10-24 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "name": "ESS Roster Entry",
+ "module": "ESS Portal",
+ "custom": 0,
+ "engine": "InnoDB",
+ "editable_grid": 1,
+ "field_order": [
+  "roster",
+  "employee",
+  "employee_name",
+  "date",
+  "column_break_81",
+  "shift_type",
+  "shift_location",
+  "is_rest_day",
+  "note"
+ ],
+ "fields": [
+  {
+   "fieldname": "roster",
+   "fieldtype": "Link",
+   "label": "Roster",
+   "options": "ESS Roster",
+   "reqd": 1,
+   "in_list_view": 1,
+   "search_index": 1,
+   "idx": 1
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1,
+   "in_list_view": 1,
+   "search_index": 1,
+   "idx": 2
+  },
+  {
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "read_only": 1,
+   "idx": 3
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date",
+   "reqd": 1,
+   "in_list_view": 1,
+   "search_index": 1,
+   "idx": 4
+  },
+  {
+   "fieldname": "column_break_81",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 5
+  },
+  {
+   "fieldname": "shift_type",
+   "fieldtype": "Link",
+   "label": "Shift Type",
+   "options": "Shift Type",
+   "in_list_view": 1,
+   "idx": 6
+  },
+  {
+   "fieldname": "shift_location",
+   "fieldtype": "Link",
+   "label": "Shift Location",
+   "options": "Shift Location",
+   "idx": 7
+  },
+  {
+   "fieldname": "is_rest_day",
+   "fieldtype": "Check",
+   "label": "Is Rest Day",
+   "in_list_view": 1,
+   "idx": 8
+  },
+  {
+   "fieldname": "note",
+   "fieldtype": "Data",
+   "label": "Note",
+   "idx": 9
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "ESS Portal Admin",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "HR Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 0,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "HR User",
+   "read": 1,
+   "write": 0,
+   "create": 0,
+   "delete": 0,
+   "report": 1,
+   "export": 0,
+   "print": 1,
+   "email": 1,
+   "share": 0
+  }
+ ],
+ "sort_field": "date",
+ "sort_order": "ASC",
+ "states": [],
+ "links": [],
+ "index_web_pages_for_search": 0,
+ "row_format": "Dynamic",
+ "autoname": "hash",
+ "naming_rule": "Random"
+}

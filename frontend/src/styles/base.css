@@ -52,6 +52,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--sp-4); }
 .check { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; cursor: pointer; }
 .check input { width: 18px; height: 18px; accent-color: var(--brand); }
+input[type="range"], input[type="radio"] { accent-color: var(--brand); }
 
 /* Buttons */
 .btn {

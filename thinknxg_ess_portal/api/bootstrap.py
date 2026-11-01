@@ -8,6 +8,14 @@ PUBLIC_SETTINGS = ["portal_title", "brand_color", "logo", "default_language", "w
                    "allow_public_recognition", "show_team_availability", "require_geolocation"]
 
 
+def _capabilities(emp):
+    caps = identity.capabilities()
+    from thinknxg_ess_portal.services import checkin_policy, roster
+    caps["modules"]["checkin"] = bool(emp) and bool(caps["modules"].get("attendance")) and checkin_policy.resolve(emp.name).enabled
+    caps["planner"] = bool(caps["modules"].get("roster")) and roster.can_plan()
+    return caps
+
+
 @frappe.whitelist(methods=["GET"])
 def get_boot():
     identity.require_login()
@@ -25,7 +33,7 @@ def get_boot():
         "employee": {k: (str(v) if v is not None else None) for k, v in (emp or {}).items()
                      if k in ("name", "employee_name", "first_name", "designation", "department", "company",
                               "branch", "image", "date_of_joining")} if emp else None,
-        "capabilities": identity.capabilities(),
+        "capabilities": _capabilities(emp),
         "settings": {k: s.get(k) for k in PUBLIC_SETTINGS},
         "lang": "ar" if str(lang).startswith("ar") else "en",
         "server_date": today(),

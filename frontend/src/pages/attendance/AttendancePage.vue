@@ -18,14 +18,17 @@ const m = ref(now.getMonth() + 1);
 const selected = ref<string | null>(null);
 const { data, loading, error, reload } = useResource<any>(() => `attendance:${y.value}-${m.value}`, () => Attendance.month(y.value, m.value), { watch: [y, m] });
 
-const TONE: Record<string, string> = { Present: "ok", Absent: "bad", "On Leave": "info", "Half Day": "info", "Work From Home": "brand", Holiday: "warn", Missing: "bad", Unmarked: "" };
+const TONE: Record<string, string> = { Present: "ok", Absent: "bad", "On Leave": "info", "Half Day": "info", "Work From Home": "brand", Holiday: "warn", Missing: "bad", Unmarked: "", "Rest Day": "" };
 const cells = computed<Record<string, DayCell>>(() => {
   const out: Record<string, DayCell> = {};
   for (const d of data.value?.days || []) {
     const marks = [] as { tone: string; text: string }[];
     if (d.late) marks.push({ tone: "warn", text: t("Late") });
     if (d.incomplete) marks.push({ tone: "bad", text: t("Missing punch") });
-    out[d.date] = { date: d.date, tone: TONE[d.status] || "", label: d.holiday || (["Future", "Unmarked", "Weekly Off"].includes(d.status) ? "" : t(d.status)), marks, muted: d.status === "Future" };
+    const sh = d.shifts?.[0];
+    out[d.date] = { date: d.date, tone: TONE[d.status] || "", color: d.status === "Future" && sh ? sh.color : undefined,
+      label: d.holiday || (d.status === "Future" && sh ? `${sh.code} ${sh.start}` : ["Future", "Unmarked", "Weekly Off"].includes(d.status) ? "" : t(d.status)),
+      marks, muted: d.status === "Future" && !sh };
   }
   return out;
 });
@@ -36,7 +39,8 @@ function shift(n: number) { const d = new Date(y.value, m.value - 1 + n, 1); y.v
 <template>
   <div class="page">
     <PageHeader :title="t('Attendance')" subtitle="Your recorded attendance, from check-ins and HR's attendance records.">
-      <RouterLink v-if="s.module('checkin')" to="/attendance/check-in" class="btn primary">{{ t("Check in") }}</RouterLink>
+      <RouterLink to="/attendance/check-in" class="btn primary">{{ t("Check in") }}</RouterLink>
+      <RouterLink v-if="s.module('roster')" to="/roster" class="btn">{{ t("My roster") }}</RouterLink>
       <RouterLink to="/attendance/corrections" class="btn">{{ t("Corrections") }}</RouterLink>
     </PageHeader>
     <ErrorState :error="error" @retry="reload" />
@@ -56,6 +60,7 @@ function shift(n: number) { const d = new Date(y.value, m.value - 1 + n, 1); y.v
         <template v-if="day">
           <header><h2>{{ fmtDate(day.date, { weekday: "long", day: "numeric", month: "long" }) }}</h2><StatusBadge :status="day.status" /></header>
           <p v-if="day.holiday" class="muted">{{ day.holiday }}</p>
+          <p v-for="s in day.shifts || []" :key="s.start_dt" class="small">{{ s.shift_type }} · <span class="num">{{ s.start }}–{{ s.end }}</span></p>
           <ul class="list" v-if="day.logs.length">
             <li v-for="(l, i) in day.logs" :key="i"><span class="grow">{{ l.log_type === "IN" ? t("Check in") : t("Check out") }}</span><span class="num">{{ l.time }}</span></li>
           </ul>

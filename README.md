@@ -65,7 +65,9 @@ Record-level rules for custom DocTypes are enforced in `permissions/__init__.py`
 | `bootstrap` | `get_boot` |
 | `dashboard` | `get_summary` |
 | `inbox` | `get_items(cursor, limit, type)` → `{items[], total, next_cursor}` |
-| `attendance` | `get_today`, `check_in`, `check_out`, `get_month`, `request_correction`, `my_corrections` |
+| `attendance` | `get_today`, `precheck`, `check_in`, `check_out`, `my_checkin_log`, `get_month`, `request_correction`, `my_corrections` |
+| `roster` | employee: `my_schedule`, `swap_candidates`, `request_change`, `respond_swap`, `cancel_request`, `holidays`, `calendar_ics` · planner: `list_rosters`, `team_members`, `create_roster`, `get_roster`, `save_cells`, `add_employees`, `remove_employee`, `apply_pattern`, `copy_from`, `set_requirements`, `validate_roster`, `publish`, `archive`, `patterns`, `save_pattern` |
+| `checkin_admin` | `get_overview`, `save_policy`, `list_locations`, `save_location`, `list_overrides`, `save_override`, `remove_override`, `resolve_for`, `logs`, `log_detail` |
 | `leave` | `get_overview`, `preview`, `create_request`, `my_requests`, `withdraw_request`, `get_calendar` |
 | `payroll` | `list_payslips`, `get_payslip`, `download_payslip`, `get_benefits` |
 | `expenses` | `overview`, `create_claim`, `claim_detail`, `request_advance` |
@@ -95,11 +97,14 @@ AI: ESS AI Conversation (metadata) · ESS AI Message Audit (no message text) · 
 Comms: ESS Announcement · ESS Announcement Read · ESS Policy · ESS Policy Acknowledgement
 Profile: ESS Profile Change Request · ESS Profile Change Item (child)
 
-Custom fields: `Department.ess_department_head`, `Attendance Request.ess_status` / `ess_review_comment` (HRMS has no rejected state for drafts).
+Check-in control: ESS Checkin Location · ESS Checkin Policy (+ ESS Checkin Policy Location) · ESS Checkin Log
+Roster: ESS Roster (+ ESS Roster Requirement) · ESS Roster Entry · ESS Shift Pattern (+ ESS Shift Pattern Step) · ESS Roster Change Request
+
+Custom fields: `Department.ess_department_head`, `Attendance Request.ess_status` / `ess_review_comment` (HRMS has no rejected state for drafts), `Shift Assignment.ess_roster` (marks assignments a roster owns), `Shift Type.ess_code` / `ess_color` (grid labels), `Employee Checkin.ess_source` / `ess_accuracy` / `ess_location` / `ess_distance` / `ess_log` (portal punch context; device and Desk punches leave them empty).
 
 ## How the key flows work
 
-- **Check-in** — server time only; shift from active Shift Assignment (or default shift); geofence from HRMS *Shift Location* radius (haversine, tolerant of GPS accuracy up to 100 m); sequence + cooldown checks; never queued offline.
+- **Check-in** — see *Employee check-in control* below. Server time only; never queued offline.
 - **Leave** — balances from `get_leave_details`, days from `get_number_of_leave_days`, balance from `get_leave_balance_on`; overlap/holiday preview recalculated server-side on every date change and again at submit.
 - **Approvals** — a request is actionable only if it is in the caller's computed pending list (approver field, reporting line, HR role, or active delegation). If a Frappe Workflow exists for the DocType, the matching workflow action is applied instead of setting status. Rejections require a reason. Every decision writes an ESS Audit Event.
 - **Delegation** — hourly job shares open documents with the delegate and revokes on expiry.
@@ -107,6 +112,45 @@ Custom fields: `Department.ess_department_head`, `Attendance Request.ess_status`
 - **Helpdesk** — SLA due dates from category; transition map enforced in the controller; 15-minute escalation job (level 1 → category escalation user, level 2+ → HR Managers); internal notes never leave the server for employees; auto-close after N days.
 - **Recognition** — monthly points budget per sender, optional HR moderation, no self-recognition, rule badges (anniversary, recognitions received/given, training, onboarding, policies). No rankings, nothing tied to hours or attendance.
 - **Analytics** — server-side aggregates only; HR breakdowns below `min_group_size` (default 5) are suppressed; daily snapshot table for trend reporting.
+
+## Employee check-in control
+
+Settings live in **ESS Portal Settings → Employee Check-in / Geolocation** and in the portal at **HR operations → Check-in control** (HR Managers and ESS Portal Admins edit; HR Users view).
+
+| Setting | Effect |
+|---|---|
+| Global employee check-in | Default permission for portal users. |
+| Employee permission policy | *Allow employee-specific overrides*: an ESS Checkin Policy can allow or deny one person against the default. *Enforce global setting for everyone*: overrides are ignored. |
+| Require GPS verification | Location must be captured before a punch is accepted. |
+| Geofence enforcement | *Enforce geofence* (must be inside a permitted location) or *Record location only*. |
+| Allowed geofence radius | Default radius for locations without their own. |
+| Maximum GPS accuracy uncertainty | A fix reported worse than this (e.g. ±50 m) is refused with a specific message. |
+| Allow check-in only during assigned shift window | IN punches only between *shift start − early minutes* and *shift end + late minutes*, from the Shift Type's own buffers (portal defaults when they are 0). Overnight shifts are handled. |
+| Allow check-in on days without a shift | Otherwise rest days, holidays and unassigned days refuse IN punches. |
+
+Per-employee **ESS Checkin Policy**: portal access (Inherit/Allow/Deny), GPS (Inherit/Required/Exempt), shift window (Inherit/Enforce/Don't enforce), radius and accuracy overrides, extra or exclusive locations, validity dates and a mandatory reason. Every change is written to ESS Audit Event.
+
+**Permitted locations** for a punch are the Shift Location on the employee's current Shift Assignment (if enabled), active **ESS Checkin Locations** that apply to the employee (all, company, branch or department), and any locations listed on their override. *Only these locations* restricts them to the override's list.
+
+**Decision order** (`services/checkin_policy.evaluate`): portal access → punch sequence (no double IN; OUT needs an open IN in the last 20 hours) → cooldown → shift window or no-shift rule → GPS presence, accuracy, geofence → risk flags. Every attempt, allowed or denied, writes an **ESS Checkin Log** with server and device time, coordinates, accuracy, matched or nearest location and distance, shift window, risk flags, IP, user agent and the full policy trace. HR can filter and export it at **HR operations → Check-in audit**.
+
+**Channels are independent.** These rules apply only to `attendance.check_in`/`check_out`. Biometric devices posting to the Employee Checkin API and HR staff in Desk are untouched, so turning portal check-in off never stops a device integration.
+
+**Frappe HR's own rule still applies.** If *HR Settings → Allow Geolocation Tracking* is on, HRMS validates every Employee Checkin against the Shift Location radius and requires coordinates. An ESS GPS exemption or an extra ESS location cannot override that; the portal reports it as `NATIVE_VALIDATION` and the settings page warns when it is on. Turn it off if ESS should be the single decision-maker.
+
+**About GPS.** Browsers share location only over HTTPS (or localhost) and only with the employee's permission; the page explains each failure (blocked, unavailable, timeout, insecure). The server re-checks every coordinate, but a phone's reported position can't prove physical presence. Risk flags (unrealistic ±0 m accuracy, travel faster than *max travel speed*, coordinates identical to another day's) are logged for review and can optionally block.
+
+## Rosters
+
+**Employees** get *My roster* (week and month views, shift times, check-in window, location, rest days, holidays, leave), *Holidays* (year view, next holiday, weekly offs, .ics download) and can request a **shift change**, a **rest day** or a **swap with a colleague**. A swap goes to the colleague first, then to the approver (the roster's planner, or the reporting manager). Requests need the configured notice and must fall on a published roster. They appear in the existing Approvals queue as *Roster changes*.
+
+**Managers and HR** use the **Roster planner**: paint shifts with click, drag or keyboard; apply rotation patterns (e.g. 2 days, 2 evenings, 1 night, 2 off) with a per-person stagger; copy a previous roster (whole weeks repeat so weekdays line up); set coverage needs per shift and weekday. Live checks cover overlapping shifts, minimum rest, maximum consecutive days, maximum weekly hours, coverage gaps, leave clashes, people on two rosters, default shifts on rest days, and manual Shift Assignments in the way. Managers can only roster their own reporting line; HR works within its scope.
+
+**Publishing** writes native **Shift Assignments**, one per run of identical days, tagged with `ess_roster`, so Frappe HR auto-attendance, shift-based check-in linking and payroll keep working as they do today:
+- Only today onward is written. Past days are locked once published and never rewritten.
+- Republishing ends or cancels the roster's own future assignments and recreates them; untagged (manual) assignments are never touched unless HR ticks *trim manual assignments*, which ends or deactivates them with a comment.
+- Rest days get no assignment. If an employee also has a **default shift**, Frappe HR falls back to it on rest days and may mark absence, so the planner warns; clear default shifts for rostered staff.
+- People whose plan changed are notified. Each publish is recorded in ESS Audit Event.
 
 ## AI HR assistant
 
@@ -126,6 +170,9 @@ Manifest + icons under `/assets/thinknxg_ess_portal/ess/`, service worker served
 EN/AR with full RTL, light/dark/system themes, keyboard command palette (Ctrl/⌘ K), skip link, focus-trapped dialogs, reduced-motion support, touch-sized controls and a bottom tab bar with a centre punch button on mobile.
 
 ## Tests
+
+- `thinknxg_ess_portal/tests/test_pure.py` — 17 unit tests for geofence maths, accuracy rules, risk flags, shift windows (including overnight and Frappe's timedelta times), roster rules, coverage and rotation patterns. Runs without a bench: `python -m pytest thinknxg_ess_portal/tests/test_pure.py`.
+- `thinknxg_ess_portal/tests/test_checkin_roster.py` — integration tests: global off vs. Allow override, *Enforce global* ignoring overrides, Deny override writing a denied log, outside-geofence and poor-accuracy refusals, GPS exemption, shift-window enforcement, managers blocked from rostering outside their team, publish creating tagged assignments and republish replacing them, swap needing colleague acceptance before it reaches the manager.
 
 - `thinknxg_ess_portal/tests/test_security.py` — colleague ticket isolation, confidential tickets hidden from agents, internal notes hidden, manager scope = reporting line, non-manager blocked from team member, unauthorised approval blocked, protected profile fields rejected, idempotent duplicate submission, assistant refusal for a colleague's payslip, AI tool identity stripping, self-recognition blocked.
   `bench --site test.site run-tests --app thinknxg_ess_portal`

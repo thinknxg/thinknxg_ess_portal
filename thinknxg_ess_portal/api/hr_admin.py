@@ -18,6 +18,11 @@ EDITABLE_SETTINGS = [
 ]
 
 
+from thinknxg_ess_portal.api.checkin_admin import POLICY_KEYS, ROSTER_KEYS  # noqa: E402
+
+EDITABLE_SETTINGS = list(dict.fromkeys(EDITABLE_SETTINGS + POLICY_KEYS + ROSTER_KEYS))
+
+
 def _hr():
     guard(employee=False)
     if not identity.is_hr():

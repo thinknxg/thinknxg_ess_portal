@@ -15,7 +15,9 @@ const idx = ref(0);
 const input = ref<HTMLInputElement | null>(null);
 
 const ACTIONS = [
-  { label: "Check in", to: "/attendance/check-in", icon: "clock", module: "checkin" },
+  { label: "Check in", to: "/attendance/check-in", icon: "clock", module: "attendance" },
+  { label: "My roster", to: "/roster", icon: "calendar", module: "roster" },
+  { label: "Holidays", to: "/holidays", icon: "calendar", module: "attendance" },
   { label: "Apply for leave", to: "/leave/apply", icon: "sun", module: "leave" },
   { label: "New claim", to: "/finances/expenses/new", icon: "receipt", module: "expenses" },
   { label: "New ticket", to: "/support/new", icon: "lifebuoy", module: "helpdesk" },

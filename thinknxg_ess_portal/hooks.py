@@ -40,6 +40,8 @@ _SCOPED = {
     "ESS Push Subscription": "own_user",
     "ESS Approval Delegation": "delegation",
     "ESS Badge Award": "badge_award",
+    "ESS Checkin Log": "checkin_log",
+    "ESS Roster Change Request": "roster_change",
 }
 permission_query_conditions = {dt: f"{_P}.{fn}_query" for dt, fn in _SCOPED.items()}
 has_permission = {dt: f"{_P}.{fn}_has_permission" for dt, fn in _SCOPED.items()}
@@ -55,6 +57,9 @@ doc_events = {
                            "on_submit": "thinknxg_ess_portal.services.events.on_attendance_request_update"},
     "Salary Slip": {"on_submit": "thinknxg_ess_portal.services.events.on_salary_slip_submit"},
     "ESS Announcement": {"on_update": "thinknxg_ess_portal.services.events.on_announcement_update"},
+    # cache invalidation only - the portal never changes how these native doctypes behave
+    "Shift Type": {"on_update": "thinknxg_ess_portal.services.shifts.clear_cache"},
+    "ESS Checkin Location": {"on_trash": "thinknxg_ess_portal.services.checkin_policy.clear_location_cache"},
 }
 
 scheduler_events = {

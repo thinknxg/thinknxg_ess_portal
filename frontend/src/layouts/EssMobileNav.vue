@@ -10,7 +10,7 @@ const s = useSession();
   <nav class="tabs" aria-label="Primary" v-if="s.employee">
     <RouterLink to="/" class="tab" exact-active-class="on"><EssIcon name="home" /><span>{{ t("Home") }}</span></RouterLink>
     <RouterLink v-if="s.module('leave')" to="/leave" class="tab" active-class="on"><EssIcon name="sun" /><span>{{ t("Leave") }}</span></RouterLink>
-    <RouterLink v-if="s.module('checkin')" to="/attendance/check-in" class="punch" :aria-label="t('Check in')"><EssIcon name="clock" :size="24" /></RouterLink>
+    <RouterLink v-if="s.module('attendance')" to="/attendance/check-in" class="punch" :aria-label="t('Check in')"><EssIcon name="clock" :size="24" /></RouterLink>
     <RouterLink to="/inbox" class="tab" active-class="on"><EssIcon name="inbox" /><span>{{ t("Inbox") }}</span></RouterLink>
     <RouterLink v-if="s.can('manager|hr')" to="/team/approvals" class="tab" active-class="on"><EssIcon name="check" /><span>{{ t("Approvals") }}</span></RouterLink>
     <RouterLink v-else to="/assistant" class="tab" active-class="on"><EssIcon name="spark" /><span>{{ t("HR assistant") }}</span></RouterLink>

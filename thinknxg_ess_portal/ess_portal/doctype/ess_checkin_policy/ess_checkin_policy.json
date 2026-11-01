@@ -1,0 +1,213 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-10-24 12:00:00.000000",
+ "modified": "2026-10-24 12:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "doctype": "DocType",
+ "name": "ESS Checkin Policy",
+ "module": "ESS Portal",
+ "custom": 0,
+ "engine": "InnoDB",
+ "editable_grid": 1,
+ "field_order": [
+  "employee",
+  "employee_name",
+  "is_active",
+  "column_break_64",
+  "valid_from",
+  "valid_until",
+  "section_break_65",
+  "checkin_access",
+  "gps_requirement",
+  "shift_window",
+  "column_break_66",
+  "radius_override",
+  "accuracy_override",
+  "section_break_67",
+  "location_mode",
+  "locations",
+  "section_break_68",
+  "reason"
+ ],
+ "fields": [
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1,
+   "idx": 1
+  },
+  {
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "fetch_from": "employee.employee_name",
+   "read_only": 1,
+   "in_list_view": 1,
+   "idx": 2
+  },
+  {
+   "fieldname": "is_active",
+   "fieldtype": "Check",
+   "label": "Is Active",
+   "default": "1",
+   "in_list_view": 1,
+   "idx": 3
+  },
+  {
+   "fieldname": "column_break_64",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 4
+  },
+  {
+   "fieldname": "valid_from",
+   "fieldtype": "Date",
+   "label": "Valid From",
+   "idx": 5
+  },
+  {
+   "fieldname": "valid_until",
+   "fieldtype": "Date",
+   "label": "Valid Until",
+   "idx": 6
+  },
+  {
+   "fieldname": "section_break_65",
+   "fieldtype": "Section Break",
+   "label": "Rules",
+   "idx": 7
+  },
+  {
+   "fieldname": "checkin_access",
+   "fieldtype": "Select",
+   "label": "Portal check-in",
+   "options": "Inherit\nAllow\nDeny",
+   "default": "Inherit",
+   "in_list_view": 1,
+   "idx": 8
+  },
+  {
+   "fieldname": "gps_requirement",
+   "fieldtype": "Select",
+   "label": "GPS verification",
+   "options": "Inherit\nRequired\nExempt",
+   "default": "Inherit",
+   "idx": 9
+  },
+  {
+   "fieldname": "shift_window",
+   "fieldtype": "Select",
+   "label": "Shift window",
+   "options": "Inherit\nEnforce\nDon't enforce",
+   "default": "Inherit",
+   "idx": 10
+  },
+  {
+   "fieldname": "column_break_66",
+   "fieldtype": "Column Break",
+   "label": null,
+   "idx": 11
+  },
+  {
+   "fieldname": "radius_override",
+   "fieldtype": "Int",
+   "label": "Radius override (m)",
+   "idx": 12
+  },
+  {
+   "fieldname": "accuracy_override",
+   "fieldtype": "Int",
+   "label": "Accuracy limit override (m)",
+   "idx": 13
+  },
+  {
+   "fieldname": "section_break_67",
+   "fieldtype": "Section Break",
+   "label": "Locations",
+   "idx": 14
+  },
+  {
+   "fieldname": "location_mode",
+   "fieldtype": "Select",
+   "label": "Location Mode",
+   "options": "Add to default locations\nOnly these locations",
+   "default": "Add to default locations",
+   "idx": 15
+  },
+  {
+   "fieldname": "locations",
+   "fieldtype": "Table",
+   "label": "Locations",
+   "options": "ESS Checkin Policy Location",
+   "idx": 16
+  },
+  {
+   "fieldname": "section_break_68",
+   "fieldtype": "Section Break",
+   "label": null,
+   "idx": 17
+  },
+  {
+   "fieldname": "reason",
+   "fieldtype": "Small Text",
+   "label": "Reason",
+   "reqd": 1,
+   "idx": 18
+  }
+ ],
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "ESS Portal Admin",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  },
+  {
+   "role": "HR Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1,
+   "print": 1,
+   "email": 1,
+   "share": 1
+  }
+ ],
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "links": [],
+ "index_web_pages_for_search": 0,
+ "row_format": "Dynamic",
+ "autoname": "field:employee",
+ "naming_rule": "By fieldname",
+ "title_field": "employee_name",
+ "track_changes": 1,
+ "description": "Employee-specific overrides. Ignored when the global policy is set to 'Enforce global setting for everyone'."
+}
